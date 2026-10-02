@@ -1,0 +1,3008 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Petualangan Pythagoras - Media Pembelajaran SMP</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter, Fredoka & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tone.js for Sound Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 50%, #fef3c7 100%);
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .font-fredoka {
+            font-family: 'Fredoka', cursive, sans-serif;
+        }
+        .math-font {
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            font-style: italic;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .touch-action-btn:active {
+            transform: scale(0.96);
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            transition: transform 0.1s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:active {
+            transform: scale(1.15);
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col min-h-screen pb-20 sm:pb-8">
+
+    <!-- TOP HEADER -->
+    <header class="bg-white/90 backdrop-blur-md shadow-xs sticky top-0 z-40 border-b border-emerald-100">
+        <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-14 sm:h-16">
+                <div class="flex items-center space-x-2.5 cursor-pointer select-none" onclick="switchTab('materi')">
+                    <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white shadow-md shadow-emerald-200">
+                        <i class="fa-solid fa-shapes text-base sm:text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-fredoka text-lg sm:text-xl font-bold text-slate-800 tracking-wide flex items-center gap-1.5">
+                            Pytha<span class="text-emerald-600">Quest</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-[10px] sm:text-xs px-2 py-0.5 rounded-full font-sans font-semibold">SMP</span>
+                        </span>
+                        <p class="text-[11px] text-slate-500 hidden md:block">Petualangan Belajar Teorema Pythagoras</p>
+                    </div>
+                </div>
+
+                <nav class="hidden md:flex items-center space-x-1 sm:space-x-2">
+                    <button id="desktop-nav-btn-materi" onclick="switchTab('materi')" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-emerald-700 bg-emerald-50 flex items-center gap-2">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span>Materi & Bukti</span>
+                    </button>
+                    <button id="desktop-nav-btn-lab" onclick="switchTab('lab')" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-emerald-600 hover:bg-slate-50 flex items-center gap-2">
+                        <i class="fa-solid fa-flask"></i>
+                        <span>Lab Visual 3D</span>
+                    </button>
+                    <button id="desktop-nav-btn-game" onclick="switchTab('game')" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-emerald-600 hover:bg-slate-50 flex items-center gap-2">
+                        <i class="fa-solid fa-gamepad text-amber-500"></i>
+                        <span>Game Misi</span>
+                        <span class="flex h-2 w-2 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                        </span>
+                    </button>
+                    <button id="desktop-nav-btn-kuis" onclick="switchTab('kuis')" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-emerald-600 hover:bg-slate-50 flex items-center gap-2">
+                        <i class="fa-solid fa-trophy text-purple-500"></i>
+                        <span>Tantangan Kuis</span>
+                    </button>
+                    <button id="desktop-nav-btn-ai" onclick="switchTab('ai')" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-emerald-600 hover:bg-slate-50 flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-indigo-500"></i>
+                        <span>Guru AI</span>
+                        <span class="bg-indigo-100 text-indigo-700 text-[10px] font-black px-1.5 py-0.5 rounded-md uppercase">Tutor</span>
+                    </button>
+                    <button id="desktop-nav-btn-quotes" onclick="switchTab('quotes')" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-rose-600 hover:bg-slate-50 flex items-center gap-2">
+                        <i class="fa-solid fa-heart-circle-bolt text-rose-500"></i>
+                        <span>Kata & Gombal</span>
+                        <span class="bg-rose-100 text-rose-700 text-[10px] font-black px-1.5 py-0.5 rounded-md uppercase">10</span>
+                    </button>
+                    <button id="desktop-nav-btn-identitas" onclick="switchTab('identitas')" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-teal-600 hover:bg-slate-50 flex items-center gap-2">
+                        <i class="fa-solid fa-id-card text-teal-600"></i>
+                        <span>Identitas</span>
+                    </button>
+                </nav>
+
+                <div class="flex items-center space-x-2">
+                    <button onclick="toggleTpModal()" title="Lihat Tujuan Pembelajaran" class="touch-action-btn px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-bullseye text-emerald-600"></i>
+                        <span class="hidden sm:inline">Tujuan Pembelajaran</span>
+                    </button>
+                    <button id="audio-toggle-btn" onclick="toggleAudio()" title="Aktifkan / Nonaktifkan Efek Suara" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition touch-action-btn">
+                        <i id="audio-icon" class="fa-solid fa-volume-high text-sm sm:text-base"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE BOTTOM NAVIGATION -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-2xl px-2 py-1.5 flex justify-around items-center">
+        <button id="mobile-nav-btn-materi" onclick="switchTab('materi')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-emerald-600 touch-action-btn transition">
+            <i class="fa-solid fa-book-open text-lg"></i>
+            <span class="text-[10px] font-medium mt-0.5">Materi</span>
+        </button>
+        <button id="mobile-nav-btn-lab" onclick="switchTab('lab')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-400 touch-action-btn transition">
+            <i class="fa-solid fa-flask text-lg"></i>
+            <span class="text-[10px] font-medium mt-0.5">Lab</span>
+        </button>
+        <button id="mobile-nav-btn-game" onclick="switchTab('game')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-400 touch-action-btn transition relative">
+            <div class="relative">
+                <i class="fa-solid fa-gamepad text-lg"></i>
+                <span class="absolute -top-1 -right-2 flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                </span>
+            </div>
+            <span class="text-[10px] font-medium mt-0.5">Game</span>
+        </button>
+        <button id="mobile-nav-btn-kuis" onclick="switchTab('kuis')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-400 touch-action-btn transition">
+            <i class="fa-solid fa-trophy text-lg"></i>
+            <span class="text-[10px] font-medium mt-0.5">Kuis</span>
+        </button>
+        <button id="mobile-nav-btn-ai" onclick="switchTab('ai')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-400 touch-action-btn transition">
+            <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+            <span class="text-[10px] font-medium mt-0.5">Guru AI</span>
+        </button>
+        <button id="mobile-nav-btn-quotes" onclick="switchTab('quotes')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-400 touch-action-btn transition">
+            <i class="fa-solid fa-heart text-lg"></i>
+            <span class="text-[10px] font-medium mt-0.5">Gombal</span>
+        </button>
+        <button id="mobile-nav-btn-identitas" onclick="switchTab('identitas')" class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-slate-400 touch-action-btn transition">
+            <i class="fa-solid fa-id-card text-lg"></i>
+            <span class="text-[10px] font-medium mt-0.5">Identitas</span>
+        </button>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-3.5 sm:px-6 lg:px-8 py-4 sm:py-6">
+
+        <!-- ================= TAB 1: MATERI & KONSEP VISUAL ================= -->
+        <section id="tab-materi" class="space-y-4 sm:space-y-6">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white p-5 sm:p-8 shadow-xl">
+                <div class="absolute -right-10 -bottom-10 opacity-15 pointer-events-none hidden sm:block">
+                    <i class="fa-solid fa-draw-polygon text-[220px]"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="bg-emerald-500/40 text-emerald-100 text-[11px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-emerald-400/30 inline-block mb-2 sm:mb-3">
+                        Matematika SMP Kelas 8 - Bab 6
+                    </span>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold font-fredoka tracking-wide mb-2 leading-tight">
+                        Mengenal Teorema Pythagoras
+                    </h1>
+                    <p class="text-emerald-50 text-xs sm:text-base leading-relaxed mb-4 sm:mb-5">
+                        Siapakah Pythagoras? Ia adalah matematikawan dan filsuf Yunani kuno yang menemukan rahasia ajaib segitiga siku-siku: <strong>luas persegi pada sisi miring sama persis dengan jumlah luas persegi kedua sisi siku-sikunya!</strong>
+                    </p>
+                    <div class="flex flex-wrap gap-2.5">
+                        <button onclick="openHistoryModal()" class="touch-action-btn bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-2 text-xs sm:text-sm">
+                            <i class="fa-solid fa-scroll"></i> Biografi & Sejarah
+                        </button>
+                        <button onclick="switchTab('lab')" class="touch-action-btn bg-white text-emerald-700 hover:bg-emerald-50 font-bold px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-2 text-xs sm:text-sm">
+                            <i class="fa-solid fa-flask"></i> Laboratorium Segitiga
+                        </button>
+                        <button onclick="switchTab('game')" class="touch-action-btn bg-emerald-500/40 hover:bg-emerald-500/60 text-white font-bold px-4 py-2.5 rounded-xl border border-white/20 transition flex items-center gap-2 text-xs sm:text-sm">
+                            <i class="fa-solid fa-gamepad"></i> Mainkan Game
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION BIOGRAFI & SEJARAH PYTHAGORAS -->
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-xs border border-slate-100">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 text-amber-600 text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-amber-50 px-3 py-1 rounded-full mb-1">
+                            <i class="fa-solid fa-landmark"></i> Sejarah Matematika Dunia
+                        </div>
+                        <h2 class="text-lg sm:text-2xl font-bold font-fredoka text-slate-800">Biografi Pythagoras dari Samos (±570 – 495 SM)</h2>
+                        <p class="text-slate-600 text-xs sm:text-sm">Tokoh filsuf dan matematikawan pelopor ilmu geometri Yunani kuno.</p>
+                    </div>
+                    <button onclick="openHistoryModal()" class="touch-action-btn px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-amber-200 self-start sm:self-auto">
+                        <i class="fa-solid fa-book-bookmark"></i> Baca Riwayat Lengkap
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 mt-4 items-center">
+                    <div class="lg:col-span-4 bg-gradient-to-b from-amber-50/80 via-orange-50/40 to-slate-50 p-4 sm:p-5 rounded-2xl border border-amber-200/70 text-center flex flex-col items-center">
+                        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-amber-500 to-orange-400 p-1 shadow-md mb-3 flex items-center justify-center">
+                            <div class="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden text-amber-600 text-4xl sm:text-5xl">
+                                <i class="fa-solid fa-user-graduate"></i>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-800">Pythagoras</h3>
+                        <span class="text-xs text-amber-700 font-semibold bg-amber-100/80 px-2.5 py-0.5 rounded-full mt-1">±570 SM – ±495 SM</span>
+                        <p class="text-[11px] text-slate-500 mt-1">Lahir di Pulau Samos, Ionia (Yunani Kuno)</p>
+
+                        <div class="w-full mt-3 pt-3 border-t border-amber-200/60 text-left space-y-1.5 text-xs text-slate-700">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-500 text-[11px]">Gelar:</span>
+                                <span class="font-bold text-slate-800">Bapak Bilangan</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-500 text-[11px]">Mazhab:</span>
+                                <span class="font-semibold text-slate-800">Persaudaraan Pythagoras</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-500 text-[11px]">Semboyan:</span>
+                                <span class="italic font-serif text-slate-800 text-[11px]">"Semua adalah Angka"</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-8 space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 hover:border-amber-300 transition">
+                                <span class="text-amber-600 font-bold text-xs flex items-center gap-1.5 mb-1">
+                                    <i class="fa-solid fa-ship"></i> 1. Pengembaraan
+                                </span>
+                                <p class="text-slate-600 text-[11px] leading-relaxed">
+                                    Pythagoras berkelana ke Mesir dan Babilonia untuk mempelajari matematika kuno, astronomi, dan teknik perbintangan.
+                                </p>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 hover:border-amber-300 transition">
+                                <span class="text-amber-600 font-bold text-xs flex items-center gap-1.5 mb-1">
+                                    <i class="fa-solid fa-school"></i> 2. Sekolah Kroton
+                                </span>
+                                <p class="text-slate-600 text-[11px] leading-relaxed">
+                                    Di Kroton (Italia Selatan), ia mendirikan akademi tempat para filsuf dan muridnya mendalami harmoni nada dan angka.
+                                </p>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 hover:border-amber-300 transition">
+                                <span class="text-amber-600 font-bold text-xs flex items-center gap-1.5 mb-1">
+                                    <i class="fa-solid fa-certificate"></i> 3. Pembuktian Teorema
+                                </span>
+                                <p class="text-slate-600 text-[11px] leading-relaxed">
+                                    Meskipun segitiga tali sudah dipakai di Mesir, Pythagoras adalah sosok pertama yang membuktikan relasi a² + b² = c² secara matematis!
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-amber-50 to-orange-50/60 p-3.5 sm:p-4 rounded-xl border border-amber-200 text-xs text-amber-900 leading-relaxed flex items-start gap-3">
+                            <i class="fa-solid fa-lightbulb text-amber-500 text-base mt-0.5 shrink-0"></i>
+                            <div>
+                                <strong>Tahukah Kamu?</strong> Bangsa Mesir Kuno sudah lama menggunakan tali bersimpul dengan 12 ruas untuk membentuk segitiga 3-4-5 saat mengukur batas ladang piramida. Namun, Pythagoras dan murid-muridnyalah yang pertama kali merumuskan bukti ilmiah bahwa prinsip luas persegi ini berlaku untuk <em>semua</em> jenis segitiga siku-siku di alam semesta!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TUJUAN PEMBELAJARAN INTERAKTIF -->
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-xs border border-slate-100">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 text-emerald-600 text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-emerald-50 px-3 py-1 rounded-full mb-1">
+                            <i class="fa-solid fa-bullseye"></i> Capaian Fase D - Kelas 8
+                        </div>
+                        <h2 class="text-lg sm:text-2xl font-bold font-fredoka text-slate-800">Tujuan Pembelajaran</h2>
+                        <p class="text-slate-600 text-xs sm:text-sm">Klik pada setiap nomor di bawah untuk membaca uraian dan capaian kompetensinya:</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <!-- TP 1 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden transition-all duration-200 bg-slate-50/50">
+                        <button onclick="toggleTPDetail('tp-body-1', 'tp-arrow-1')" class="w-full text-left p-3.5 sm:p-4 flex items-center justify-between gap-3 hover:bg-slate-100/80 transition touch-action-btn">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 font-bold text-sm flex items-center justify-center shrink-0">
+                                    1
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs sm:text-sm">Memahami Konsep dan Anatomi Segitiga Siku-Siku</h4>
+                                    <p class="text-[11px] text-slate-500 hidden sm:block">Mengenal sisi penyiku (a, b) dan hipotenusa (c).</p>
+                                </div>
+                            </div>
+                            <i id="tp-arrow-1" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-200"></i>
+                        </button>
+                        <div id="tp-body-1" class="hidden p-4 bg-white border-t border-slate-200 text-xs sm:text-sm text-slate-700 space-y-2 leading-relaxed">
+                            <p><strong>Uraian Capaian:</strong> Peserta didik dapat mengidentifikasi komponen segitiga siku-siku dengan tepat:</p>
+                            <ul class="list-disc list-inside space-y-1 text-slate-600 pl-1">
+                                <li><strong>Sisi Siku-siku (<span class="math-font">a</span> dan <span class="math-font">b</span>):</strong> Dua sisi yang saling tegak lurus mengapit sudut 90°.</li>
+                                <li><strong>Hipotenusa (<span class="math-font">c</span>):</strong> Sisi miring yang berada tepat di hadapan sudut siku-siku dan selalu menjadi sisi terpanjang.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- TP 2 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden transition-all duration-200 bg-slate-50/50">
+                        <button onclick="toggleTPDetail('tp-body-2', 'tp-arrow-2')" class="w-full text-left p-3.5 sm:p-4 flex items-center justify-between gap-3 hover:bg-slate-100/80 transition touch-action-btn">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 font-bold text-sm flex items-center justify-center shrink-0">
+                                    2
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs sm:text-sm">Membuktikan & Menghitung Panjang Sisi</h4>
+                                    <p class="text-[11px] text-slate-500 hidden sm:block">Membuktikan visual daerah persegi serta menerapkan rumus a² + b² = c².</p>
+                                </div>
+                            </div>
+                            <i id="tp-arrow-2" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-200"></i>
+                        </button>
+                        <div id="tp-body-2" class="hidden p-4 bg-white border-t border-slate-200 text-xs sm:text-sm text-slate-700 space-y-2.5 leading-relaxed">
+                            <p><strong>Uraian Capaian:</strong> Peserta didik mampu membuktikan kebenaran Teorema Pythagoras secara visual melalui luas daerah persegi, serta menghitung panjang sisi segitiga siku-siku:</p>
+                            <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-center">
+                                <div class="font-mono font-bold text-emerald-800 text-sm sm:text-base">a² + b² = c²</div>
+                                <div class="text-[11px] sm:text-xs text-emerald-700 mt-0.5">Turunan rumus: c = √(a² + b²), a = √(c² - b²), b = √(c² - a²)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TP 3 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden transition-all duration-200 bg-slate-50/50">
+                        <button onclick="toggleTPDetail('tp-body-3', 'tp-arrow-3')" class="w-full text-left p-3.5 sm:p-4 flex items-center justify-between gap-3 hover:bg-slate-100/80 transition touch-action-btn">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 font-bold text-sm flex items-center justify-center shrink-0">
+                                    3
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs sm:text-sm">Menentukan Kelompok Tripel Pythagoras</h4>
+                                    <p class="text-[11px] text-slate-500 hidden sm:block">Menguji tiga bilangan bulat yang memenuhi relasi kuadrat.</p>
+                                </div>
+                            </div>
+                            <i id="tp-arrow-3" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-200"></i>
+                        </button>
+                        <div id="tp-body-3" class="hidden p-4 bg-white border-t border-slate-200 text-xs sm:text-sm text-slate-700 space-y-2 leading-relaxed">
+                            <p><strong>Uraian Capaian:</strong> Peserta didik mampu menentukan dan membuktikan tiga bilangan bulat positif yang memenuhi relasi kuadrat sisi siku-siku, seperti <strong>(3, 4, 5)</strong>, <strong>(5, 12, 13)</strong>, <strong>(7, 24, 25)</strong>, dan <strong>(8, 15, 17)</strong> beserta kelipatannya.</p>
+                        </div>
+                    </div>
+
+                    <!-- TP 4 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden transition-all duration-200 bg-slate-50/50">
+                        <button onclick="toggleTPDetail('tp-body-4', 'tp-arrow-4')" class="w-full text-left p-3.5 sm:p-4 flex items-center justify-between gap-3 hover:bg-slate-100/80 transition touch-action-btn">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 font-bold text-sm flex items-center justify-center shrink-0">
+                                    4
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs sm:text-sm">Penerapan Masalah Nyata (Kontekstual)</h4>
+                                    <p class="text-[11px] text-slate-500 hidden sm:block">Menyelesaikan permasalahan sehari-hari seperti kemiringan tangga dan jembatan.</p>
+                                </div>
+                            </div>
+                            <i id="tp-arrow-4" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-200"></i>
+                        </button>
+                        <div id="tp-body-4" class="hidden p-4 bg-white border-t border-slate-200 text-xs sm:text-sm text-slate-700 space-y-2 leading-relaxed">
+                            <p><strong>Uraian Capaian:</strong> Peserta didik mampu menerapkan prinsip Teorema Pythagoras dalam memecahkan soal cerita dan masalah kehidupan nyata, seperti menghitung panjang jembatan pada jurang, jarak diagonal lapangan, dan tinggi tangga yang bersandar di dinding.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tiga Kartu Konsep Utama -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-xs border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
+                    <div>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-3 sm:mb-4 text-lg sm:text-xl">
+                            <i class="fa-solid fa-play rotate-90"></i>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-1 sm:mb-2">1. Anatomi Segitiga Siku-Siku</h3>
+                        <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-3">
+                            Hanya berlaku pada segitiga yang mempunyai satu sudut <strong>90° (siku-siku)</strong>.
+                        </p>
+                        <ul class="space-y-2 text-xs sm:text-sm text-slate-700 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-100">
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-500 font-bold mt-0.5">●</span>
+                                <div><strong>Sisi Siku-Siku (<span class="math-font">a</span> & <span class="math-font">b</span>):</strong> Saling tegak lurus mengapit sudut 90°.</div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-red-500 font-bold mt-0.5">●</span>
+                                <div><strong>Hipotenusa (<span class="math-font">c</span>):</strong> Sisi terpanjang yang berada tepat di hadapan sudut siku-siku.</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-100 text-[11px] text-slate-500 italic">
+                        💡 Tips: Hipotenusa selalu merupakan sisi yang paling panjang!
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-xs border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
+                    <div>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3 sm:mb-4 text-lg sm:text-xl">
+                            <i class="fa-solid fa-square-root-variable"></i>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-1 sm:mb-2">2. Rumus Utama Pythagoras</h3>
+                        <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-2">
+                            Kuadrat sisi miring sama dengan jumlah kuadrat sisi tegaknya:
+                        </p>
+                        <div class="bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-3.5 rounded-2xl text-center shadow-sm my-2">
+                            <div class="text-xl sm:text-2xl font-black font-fredoka tracking-wider">
+                                a² + b² = c²
+                            </div>
+                            <div class="text-[11px] sm:text-xs text-emerald-100 mt-0.5">atau c = √(a² + b²)</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-[11px] text-slate-600 font-mono">
+                            <div class="bg-slate-50 p-2 rounded-xl border border-slate-100 text-center">
+                                <strong>Mencari Sisi a:</strong><br>a = √(c² - b²)
+                            </div>
+                            <div class="bg-slate-50 p-2 rounded-xl border border-slate-100 text-center">
+                                <strong>Mencari Sisi b:</strong><br>b = √(c² - a²)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-100 text-[11px] text-slate-500 italic">
+                        💡 Pengurangan selalu dilakukan dari sisi terpanjang (<span class="math-font">c</span>²)!
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-xs border border-slate-100 flex flex-col justify-between hover:shadow-md transition">
+                    <div>
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-3 sm:mb-4 text-lg sm:text-xl">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <h3 class="font-bold text-base sm:text-lg text-slate-800 mb-1 sm:mb-2">3. "Cheat Sheet" Tripel</h3>
+                        <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-2">
+                            Tiga angka bulat ajaib yang sering keluar di ujian tanpa perlu akar manual:
+                        </p>
+                        <div class="grid grid-cols-2 md:grid-cols-1 gap-2">
+                            <div class="p-2 sm:px-3 sm:py-2 bg-purple-50 rounded-xl border border-purple-100 text-xs font-semibold text-purple-900 flex justify-between items-center">
+                                <span>3, 4, 5</span>
+                                <span class="text-[10px] text-purple-600 font-normal hidden sm:inline">(6, 8, 10)</span>
+                            </div>
+                            <div class="p-2 sm:px-3 sm:py-2 bg-indigo-50 rounded-xl border border-indigo-100 text-xs font-semibold text-indigo-900 flex justify-between items-center">
+                                <span>5, 12, 13</span>
+                                <span class="text-[10px] text-indigo-600 font-normal hidden sm:inline">(10, 24, 26)</span>
+                            </div>
+                            <div class="p-2 sm:px-3 sm:py-2 bg-sky-50 rounded-xl border border-sky-100 text-xs font-semibold text-sky-900 flex justify-between items-center">
+                                <span>7, 24, 25</span>
+                                <span class="text-[10px] text-sky-600 font-normal hidden sm:inline">(14, 48, 50)</span>
+                            </div>
+                            <div class="p-2 sm:px-3 sm:py-2 bg-amber-50 rounded-xl border border-amber-100 text-xs font-semibold text-amber-900 flex justify-between items-center">
+                                <span>8, 15, 17</span>
+                                <span class="text-[10px] text-amber-600 font-normal hidden sm:inline">(16, 30, 34)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-100 text-[11px] text-slate-500 italic">
+                        💡 Kelipatan dari tripel di atas juga selalu membentuk tripel pythagoras!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Proof Interactive -->
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xs border border-slate-100">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 text-emerald-600 text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-emerald-50 px-3 py-1 rounded-full mb-1">
+                            <i class="fa-solid fa-eye"></i> Pembuktian Visual Geometris
+                        </div>
+                        <h2 class="text-lg sm:text-2xl font-bold font-fredoka text-slate-800">Kenapa Luas Persegi Membuktikan Pythagoras?</h2>
+                        <p class="text-slate-600 text-xs sm:text-sm">Pilih segitiga di bawah dan perhatikan luas kotak di tiap sisinya:</p>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl text-xs font-semibold overflow-x-auto">
+                        <button onclick="setProofExample(3, 4)" class="px-3 py-1.5 rounded-lg bg-white shadow-xs text-emerald-700 transition proof-preset-btn whitespace-nowrap touch-action-btn" id="preset-3-4">Segitiga 3, 4, 5</button>
+                        <button onclick="setProofExample(6, 8)" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition proof-preset-btn whitespace-nowrap touch-action-btn" id="preset-6-8">Segitiga 6, 8, 10</button>
+                        <button onclick="setProofExample(5, 12)" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition proof-preset-btn whitespace-nowrap touch-action-btn" id="preset-5-12">Segitiga 5, 12, 13</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-center">
+                    <div class="lg:col-span-7 bg-slate-50 rounded-2xl p-2 sm:p-4 flex items-center justify-center border border-slate-200 min-h-[300px] sm:min-h-[380px] overflow-hidden relative">
+                        <div id="proof-svg-container" class="w-full flex justify-center"></div>
+                    </div>
+
+                    <div class="lg:col-span-5 space-y-3 sm:space-y-4">
+                        <div class="bg-blue-50/80 border border-blue-200 rounded-xl p-3 sm:p-4">
+                            <div class="text-[11px] font-bold text-blue-700 uppercase tracking-wide mb-1">Persegi Sisi Alas (a)</div>
+                            <div class="flex justify-between items-center text-xs sm:text-sm">
+                                <span class="text-slate-700">Panjang a = <strong id="proof-val-a" class="text-blue-700">3</strong> satuan</span>
+                                <span class="font-bold bg-blue-200/70 text-blue-800 px-2.5 py-1 rounded-lg">Luas a² = <span id="proof-sq-a">9</span></span>
+                            </div>
+                        </div>
+
+                        <div class="bg-emerald-50/80 border border-emerald-200 rounded-xl p-3 sm:p-4">
+                            <div class="text-[11px] font-bold text-emerald-700 uppercase tracking-wide mb-1">Persegi Sisi Tegak (b)</div>
+                            <div class="flex justify-between items-center text-xs sm:text-sm">
+                                <span class="text-slate-700">Panjang b = <strong id="proof-val-b" class="text-emerald-700">4</strong> satuan</span>
+                                <span class="font-bold bg-emerald-200/70 text-emerald-800 px-2.5 py-1 rounded-lg">Luas b² = <span id="proof-sq-b">16</span></span>
+                            </div>
+                        </div>
+
+                        <div class="bg-purple-50/80 border border-purple-200 rounded-xl p-3 sm:p-4">
+                            <div class="text-[11px] font-bold text-purple-700 uppercase tracking-wide mb-1">Persegi Sisi Miring (c)</div>
+                            <div class="flex justify-between items-center text-xs sm:text-sm">
+                                <span class="text-slate-700">Panjang c = <strong id="proof-val-c" class="text-purple-700">5</strong> satuan</span>
+                                <span class="font-bold bg-purple-200/70 text-purple-800 px-2.5 py-1 rounded-lg">Luas c² = <span id="proof-sq-c">25</span></span>
+                            </div>
+                        </div>
+
+                        <div class="bg-emerald-600 text-white rounded-xl sm:rounded-2xl p-3.5 sm:p-4 shadow-md">
+                            <div class="flex items-center gap-2 font-bold text-xs sm:text-sm mb-1">
+                                <i class="fa-solid fa-circle-check text-emerald-200"></i> Kesimpulan Pembuktian:
+                            </div>
+                            <div class="text-base sm:text-lg font-mono font-bold text-emerald-100 flex items-center justify-center gap-2 my-1.5 bg-emerald-700/60 p-2 rounded-xl">
+                                <span id="proof-calc-step">9 + 16 = 25</span>
+                            </div>
+                            <p class="text-[11px] sm:text-xs text-emerald-100 text-center">
+                                Luas Persegi A + Luas Persegi B = Luas Persegi C (Terbukti 100% sama)!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: LAB INTERAKTIF ================= -->
+        <section id="tab-lab" class="hidden space-y-4 sm:space-y-6">
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xs border border-slate-100">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-6">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 text-blue-600 text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-blue-50 px-3 py-1 rounded-full mb-1">
+                            <i class="fa-solid fa-flask"></i> Laboratorium Eksplorasi
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold font-fredoka text-slate-800">Ubah Ukuran Sisi Siku-Siku</h2>
+                        <p class="text-slate-600 text-xs sm:text-sm">Geser slider atau tekan tombol (+/-) untuk mengubah panjang alas & tinggi secara bebas!</p>
+                    </div>
+                    <button onclick="resetLab()" class="touch-action-btn px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 self-start sm:self-auto">
+                        <i class="fa-solid fa-rotate-left"></i> Reset Ukuran
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8">
+                    <div class="lg:col-span-7 bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-inner relative flex flex-col items-center justify-center min-h-[300px] sm:min-h-[420px] overflow-hidden">
+                        <div class="absolute top-3 left-3 bg-slate-800/80 backdrop-blur-md text-slate-300 text-[10px] sm:text-xs px-2.5 py-1 rounded-xl border border-slate-700">
+                            <i class="fa-solid fa-compass-drafting text-emerald-400 mr-1"></i> Kanvas Geometri
+                        </div>
+                        <canvas id="labCanvas" width="500" height="380" class="w-full max-w-[480px] h-auto rounded-xl"></canvas>
+                        <div class="mt-2 text-[10px] sm:text-xs text-slate-400 flex flex-wrap items-center justify-center gap-3">
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-blue-500 rounded-xs inline-block"></span> Alas (a)</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-xs inline-block"></span> Tinggi (b)</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-amber-400 rounded-xs inline-block"></span> Miring (c)</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="slider-a" class="text-xs sm:text-sm font-bold text-slate-700 flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> Sisi Alas (a)
+                                </label>
+                                <span class="font-bold text-blue-600 text-base sm:text-lg font-mono" id="label-a">6 cm</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button onclick="stepSlider('slider-a', -1)" class="touch-action-btn w-9 h-9 rounded-xl bg-white border border-slate-300 text-slate-700 font-bold text-lg flex items-center justify-center shadow-2xs hover:bg-blue-50">-</button>
+                                <input type="range" id="slider-a" min="3" max="20" value="6" step="1" oninput="updateLab()" class="w-full h-2.5 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                                <button onclick="stepSlider('slider-a', 1)" class="touch-action-btn w-9 h-9 rounded-xl bg-white border border-slate-300 text-slate-700 font-bold text-lg flex items-center justify-center shadow-2xs hover:bg-blue-50">+</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="slider-b" class="text-xs sm:text-sm font-bold text-slate-700 flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Sisi Tegak (b)
+                                </label>
+                                <span class="font-bold text-emerald-600 text-base sm:text-lg font-mono" id="label-b">8 cm</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button onclick="stepSlider('slider-b', -1)" class="touch-action-btn w-9 h-9 rounded-xl bg-white border border-slate-300 text-slate-700 font-bold text-lg flex items-center justify-center shadow-2xs hover:bg-emerald-50">-</button>
+                                <input type="range" id="slider-b" min="3" max="20" value="8" step="1" oninput="updateLab()" class="w-full h-2.5 bg-emerald-200 rounded-lg appearance-none cursor-pointer accent-emerald-600">
+                                <button onclick="stepSlider('slider-b', 1)" class="touch-action-btn w-9 h-9 rounded-xl bg-white border border-slate-300 text-slate-700 font-bold text-lg flex items-center justify-center shadow-2xs hover:bg-emerald-50">+</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900 text-white p-4 sm:p-5 rounded-2xl shadow-md space-y-2.5 font-mono text-xs sm:text-sm">
+                            <div class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-400 font-sans font-semibold border-b border-slate-700 pb-2 flex justify-between items-center">
+                                <span>Langkah Perhitungan:</span>
+                                <span id="is-triple-badge" class="bg-emerald-500/30 text-emerald-300 px-2 py-0.5 rounded text-[10px] sm:text-xs">Tripel Pas!</span>
+                            </div>
+
+                            <div class="space-y-1 text-slate-300">
+                                <p class="text-[11px] text-slate-400">Rumus: c = √(a² + b²)</p>
+                                <p>c² = <span id="calc-a2" class="text-blue-400">6²</span> + <span id="calc-b2" class="text-emerald-400">8²</span></p>
+                                <p>c² = <span id="calc-a2-val" class="text-blue-400">36</span> + <span id="calc-b2-val" class="text-emerald-400">64</span> = <span id="calc-sum" class="text-amber-400 font-bold">100</span></p>
+                                <div class="pt-2 border-t border-slate-800 text-emerald-400 font-bold text-sm sm:text-base flex justify-between items-center">
+                                    <span>c = √(<span id="calc-sum-2">100</span>)</span>
+                                    <span class="text-white text-base sm:text-xl bg-emerald-600 px-2.5 sm:px-3 py-1 rounded-xl shadow font-fredoka" id="calc-final-c">10 cm</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: GAME 5 MISI TEMATIK PYTHAGORAS ================= -->
+        <section id="tab-game" class="hidden space-y-4 sm:space-y-6">
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xs border border-slate-100">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-4 sm:mb-5">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 text-amber-600 text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-amber-50 px-3 py-1 rounded-full mb-1">
+                            <i id="game-theme-icon" class="fa-solid fa-gamepad"></i>
+                            <span id="game-theme-tag">Misi 1: Jembatan Jurang</span>
+                        </div>
+                        <h2 id="game-main-title" class="text-xl sm:text-2xl font-bold font-fredoka text-slate-800">Bantu Robi Menyeberang!</h2>
+                        <p id="game-main-desc" class="text-slate-600 text-xs sm:text-sm">Hitung panjang jembatan (<span class="math-font text-amber-600 font-bold">c</span>) dengan rumus Pythagoras agar pas dan aman!</p>
+                    </div>
+
+                    <div class="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-1 sm:pb-0">
+                        <div class="bg-amber-50 border border-amber-200 px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl text-center min-w-[70px]">
+                            <span class="text-[10px] text-amber-700 block font-semibold">Skor</span>
+                            <span id="game-score" class="text-lg sm:text-2xl font-black font-fredoka text-amber-600 leading-none">0</span>
+                        </div>
+                        <div class="bg-emerald-50 border border-emerald-200 px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl text-center min-w-[70px]">
+                            <span class="text-[10px] text-emerald-700 block font-semibold">Level</span>
+                            <span id="game-level" class="text-lg sm:text-2xl font-black font-fredoka text-emerald-600 leading-none">1 / 5</span>
+                        </div>
+                        <div class="bg-purple-50 border border-purple-200 px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl text-center min-w-[70px]">
+                            <span class="text-[10px] text-purple-700 block font-semibold">Nyawa</span>
+                            <div id="game-lives" class="text-red-500 text-sm sm:text-base flex gap-1 justify-center mt-0.5">
+                                <i class="fa-solid fa-heart"></i>
+                                <i class="fa-solid fa-heart"></i>
+                                <i class="fa-solid fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-inner h-[280px] sm:h-[400px] flex items-center justify-center border-2 sm:border-4 border-slate-100 bg-slate-900">
+                    <canvas id="gameCanvas" width="800" height="420" class="w-full h-full object-contain"></canvas>
+
+                    <div id="game-feedback-overlay" class="absolute inset-0 bg-slate-900/75 backdrop-blur-xs flex flex-col items-center justify-center text-white hidden p-4 text-center z-20">
+                        <div id="feedback-icon" class="text-4xl sm:text-6xl mb-2">🎉</div>
+                        <h3 id="feedback-title" class="text-xl sm:text-3xl font-fredoka font-bold mb-1">Misi Berhasil!</h3>
+                        <p id="feedback-desc" class="text-slate-200 text-xs sm:text-sm max-w-md mb-4 px-2">Perhitunganmu tepat sekali!</p>
+                        <button id="feedback-btn" onclick="nextGameLevel()" class="touch-action-btn px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold shadow-lg transition text-xs sm:text-sm flex items-center gap-2">
+                            Lanjut Misi Berikutnya <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div id="game-over-overlay" class="absolute inset-0 bg-slate-900/80 backdrop-blur-md flex flex-col items-center justify-center text-white hidden z-30 p-4 text-center">
+                        <div class="text-5xl sm:text-6xl mb-2 text-red-400"><i class="fa-solid fa-heart-crack"></i></div>
+                        <h3 class="text-2xl sm:text-3xl font-fredoka font-bold mb-1">Coba Lagi Yuk!</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm max-w-sm mb-4">Matematikawan hebat lahir dari latihan. Jangan menyerah, ayo ulangi lagi!</p>
+                        <button onclick="restartGame()" class="touch-action-btn px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-xl font-bold shadow-lg transition flex items-center gap-2 text-xs sm:text-sm">
+                            <i class="fa-solid fa-rotate-left"></i> Main Ulang Level 1
+                        </button>
+                    </div>
+
+                    <div id="game-win-overlay" class="absolute inset-0 bg-slate-900/85 backdrop-blur-md flex flex-col items-center justify-center text-white hidden z-30 p-4 text-center">
+                        <div class="text-5xl sm:text-7xl mb-2 text-amber-400 animate-bounce"><i class="fa-solid fa-crown"></i></div>
+                        <h3 class="text-2xl sm:text-4xl font-fredoka font-bold mb-1 text-amber-300">Master Penjelajah Pythagoras!</h3>
+                        <p class="text-slate-200 text-xs sm:text-sm max-w-md mb-5">Hebat! Kamu berhasil menuntaskan semua 5 misi nyata dengan perhitungan yang sangat akurat.</p>
+                        <div class="flex flex-wrap justify-center gap-2.5">
+                            <button onclick="restartGame()" class="touch-action-btn px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-xl font-semibold transition text-xs sm:text-sm">
+                                Main Lagi
+                            </button>
+                            <button onclick="switchTab('kuis')" class="touch-action-btn px-5 py-2 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold shadow-lg transition flex items-center gap-2 text-xs sm:text-sm">
+                                Uji di Kuis <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 sm:mt-6 bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-5 space-y-1.5">
+                            <div class="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">Ukuran Soal Saat Ini:</div>
+                            <div class="flex items-center gap-2.5">
+                                <div class="bg-blue-100 text-blue-800 px-3 py-1.5 rounded-xl text-center flex-1 sm:flex-initial">
+                                    <span id="game-quest-label-a" class="text-[10px] block font-medium">Lebar (a)</span>
+                                    <span id="game-quest-a" class="text-base sm:text-lg font-black font-mono">6 m</span>
+                                </div>
+                                <span class="text-lg font-bold text-slate-400">+</span>
+                                <div class="bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-xl text-center flex-1 sm:flex-initial">
+                                    <span id="game-quest-label-b" class="text-[10px] block font-medium">Tinggi (b)</span>
+                                    <span id="game-quest-b" class="text-base sm:text-lg font-black font-mono">8 m</span>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-slate-500 italic">Rumus: c = √(a² + b²)</p>
+                        </div>
+
+                        <div class="md:col-span-7 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                            <div class="relative flex-1">
+                                <input type="number" id="game-input-c" placeholder="Masukkan panjang c..." min="1" max="100" class="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl font-mono text-base sm:text-lg font-bold focus:border-amber-500 focus:outline-none shadow-xs transition" onkeydown="if(event.key==='Enter') testBridge()">
+                                <span id="game-input-unit" class="absolute right-4 top-3.5 text-slate-400 text-xs sm:text-sm font-semibold">meter</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button id="btn-test-bridge" onclick="testBridge()" class="touch-action-btn flex-1 sm:flex-initial px-5 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm sm:text-base">
+                                    <i id="btn-action-icon" class="fa-solid fa-hammer"></i>
+                                    <span id="btn-action-text">Pasang Jembatan!</span>
+                                </button>
+                                <button onclick="getGameHint()" class="touch-action-btn p-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl transition" title="Petunjuk">
+                                    <i class="fa-regular fa-lightbulb text-base sm:text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 pt-3 border-t border-slate-200/80 flex items-center gap-1.5 overflow-x-auto text-xs">
+                        <span class="text-slate-400 text-[11px] whitespace-nowrap mr-1">Opsi Cepat:</span>
+                        <div id="game-quick-options" class="flex gap-1.5"></div>
+                    </div>
+
+                    <div id="game-hint-text" class="hidden mt-3 p-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info text-amber-500"></i>
+                        <span id="hint-content">Petunjuk: Jumlahkan kuadrat keduanya lalu akarkan!</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: TANTANGAN KUIS ================= -->
+        <section id="tab-kuis" class="hidden space-y-4 sm:space-y-6">
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xs border border-slate-100 max-w-4xl mx-auto">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 text-purple-600 text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-purple-50 px-3 py-1 rounded-full mb-1">
+                            <i class="fa-solid fa-graduation-cap"></i> Uji Pemahaman SMP
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold font-fredoka text-slate-800">Kuis Cepat Teorema Pythagoras</h2>
+                        <p class="text-slate-600 text-xs sm:text-sm">Uji logika matematika dan pemahaman soal cerita kamu!</p>
+                    </div>
+                    <div class="flex items-center gap-2 self-start sm:self-auto">
+                        <span class="text-xs font-bold text-slate-500">Nomor:</span>
+                        <span id="quiz-progress" class="bg-purple-100 text-purple-800 text-xs sm:text-sm font-black px-3 py-1 rounded-xl">1 / 5</span>
+                    </div>
+                </div>
+
+                <div id="quiz-container" class="py-4 sm:py-6">
+                    <div class="mb-4 sm:mb-6">
+                        <span id="quiz-category" class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Soal Cerita Kehidupan Nyata</span>
+                        <h3 id="quiz-question-title" class="text-base sm:text-xl font-semibold text-slate-800 mt-1 leading-relaxed">
+                            Memuat soal...
+                        </h3>
+                    </div>
+
+                    <!-- Diagram Visual SVG -->
+                    <div id="quiz-image-hint" class="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-5 flex flex-col sm:flex-row items-center justify-center gap-6 min-h-[140px]">
+                        <div id="quiz-visual-canvas" class="flex items-center justify-center"></div>
+                        <div id="quiz-visual-tip" class="text-xs text-slate-600 max-w-xs bg-white p-3 rounded-xl border border-slate-200 shadow-2xs leading-relaxed"></div>
+                    </div>
+
+                    <!-- Options Grid -->
+                    <div id="quiz-options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3.5"></div>
+
+                    <!-- Feedback Box -->
+                    <div id="quiz-feedback-box" class="hidden mt-5 p-4 rounded-2xl border transition duration-200">
+                        <div class="flex items-start gap-3">
+                            <div id="quiz-feedback-icon" class="text-xl sm:text-2xl mt-0.5"></div>
+                            <div class="flex-1">
+                                <h4 id="quiz-feedback-title" class="font-bold text-sm sm:text-base"></h4>
+                                <p id="quiz-feedback-explanation" class="text-xs sm:text-sm mt-1 leading-relaxed"></p>
+
+                                <div class="mt-3 pt-2.5 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-2">
+                                    <button id="quiz-ask-ai-btn" onclick="explainQuizWithAI()" class="touch-action-btn text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-3 py-1.5 rounded-xl border border-indigo-200 flex items-center gap-1.5 transition">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i> Penjelasan Detail Guru AI
+                                    </button>
+                                </div>
+                                <div id="quiz-ai-deep-explanation" class="hidden mt-3 p-3 bg-white/90 rounded-xl border border-indigo-100 text-xs text-slate-700 leading-relaxed space-y-1 shadow-2xs"></div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-end">
+                            <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="touch-action-btn px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl shadow transition text-xs sm:text-sm flex items-center gap-2">
+                                Soal Selanjutnya <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Box -->
+                <div id="quiz-summary-box" class="hidden text-center py-6 sm:py-8 space-y-4 sm:space-y-5">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-purple-100 text-purple-600 rounded-3xl flex items-center justify-center text-3xl sm:text-4xl mx-auto shadow-inner">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl sm:text-3xl font-fredoka font-bold text-slate-800">Hasil Kuis Evaluasi</h3>
+                        <p class="text-slate-500 text-xs sm:text-sm">Berikut nilai pencapaianmu dalam Teorema Pythagoras:</p>
+                    </div>
+
+                    <div class="inline-block bg-slate-50 border border-slate-200 px-6 sm:px-8 py-3.5 sm:py-4 rounded-3xl">
+                        <span class="text-xs text-slate-500 block font-semibold">Skor Akhir</span>
+                        <span id="quiz-final-score" class="text-4xl sm:text-5xl font-black font-fredoka text-purple-600">100</span>
+                        <span class="text-[10px] sm:text-xs text-slate-400 block mt-0.5">Nilai KKM: 75</span>
+                    </div>
+
+                    <p id="quiz-final-message" class="text-slate-700 max-w-md mx-auto text-xs sm:text-sm leading-relaxed font-medium">
+                        Luar biasa! Pemahaman konsep dan hitungan segitiga siku-sikumu sudah sangat hebat!
+                    </p>
+
+                    <div class="flex justify-center gap-3 pt-2">
+                        <button onclick="restartQuiz()" class="touch-action-btn px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition text-xs sm:text-sm">
+                            <i class="fa-solid fa-rotate-left mr-1"></i> Ulangi Kuis
+                        </button>
+                        <button onclick="switchTab('game')" class="touch-action-btn px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-xl shadow transition text-xs sm:text-sm">
+                            <i class="fa-solid fa-gamepad mr-1"></i> Main Game
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: GURU AI & GENERATOR MISI ================= -->
+        <section id="tab-ai" class="hidden space-y-4 sm:space-y-6">
+            <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white p-5 sm:p-8 shadow-xl">
+                <div class="relative z-10 max-w-2xl">
+                    <span class="bg-white/20 text-indigo-100 text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full inline-block mb-2 backdrop-blur-sm">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Asisten Edukasi Pythagoras
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold font-fredoka tracking-wide mb-1.5">
+                        Guru AI & Simulator Misi
+                    </h2>
+                    <p class="text-indigo-100 text-xs sm:text-base leading-relaxed mb-3.5">
+                        Teman belajar matematika SMP pribadimu! Konsultasikan soal PR, minta tips cepat, atau buat soal cerita seru baru.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="ai-subtab-chat-btn" onclick="switchAISubTab('chat')" class="touch-action-btn px-3.5 py-2 rounded-xl bg-white text-indigo-800 font-bold text-xs sm:text-sm shadow transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-comments"></i> Tanya Guru Pythagoras
+                        </button>
+                        <button id="ai-subtab-quest-btn" onclick="switchAISubTab('quest')" class="touch-action-btn px-3.5 py-2 rounded-xl bg-indigo-500/50 hover:bg-white/20 text-white font-bold text-xs sm:text-sm transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-dice-d20"></i> Buat Misi Soal Baru
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chatbot -->
+            <div id="ai-view-chat" class="bg-white rounded-2xl sm:rounded-3xl shadow-xs border border-slate-100 overflow-hidden flex flex-col min-h-[480px]">
+                <div class="p-3.5 sm:p-4 border-b border-slate-100 bg-slate-50/70 flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-200 text-sm">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5">
+                                Guru Pythagoras AI
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                            </h3>
+                            <p class="text-[10px] text-slate-500">Tutor matematika SMP yang sabar & bersahabat</p>
+                        </div>
+                    </div>
+                    <button onclick="clearChatHistory()" class="touch-action-btn text-[11px] text-slate-500 hover:text-red-500 transition px-2.5 py-1.5 rounded-lg border border-slate-200 flex items-center gap-1">
+                        <i class="fa-solid fa-trash"></i> Bersihkan
+                    </button>
+                </div>
+
+                <div class="px-3 sm:px-6 py-2.5 bg-indigo-50/50 border-b border-indigo-100 flex items-center gap-2 overflow-x-auto text-xs whitespace-nowrap">
+                    <span class="text-indigo-800 font-semibold text-[11px] flex items-center gap-1"><i class="fa-regular fa-lightbulb"></i> Tanya:</span>
+                    <button onclick="sendQuickPrompt('Bagaimana trik gampang mengingat kelompok Tripel Pythagoras?')" class="touch-action-btn bg-white hover:bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-lg border border-indigo-200 text-[11px] transition">
+                        Trik Tripel Pythagoras ⚡
+                    </button>
+                    <button onclick="sendQuickPrompt('Beri contoh penerapan rumus Pythagoras dalam pertukangan atau kehidupan nyata.')" class="touch-action-btn bg-white hover:bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-lg border border-indigo-200 text-[11px] transition">
+                        Contoh di Dunia Nyata 📐
+                    </button>
+                    <button onclick="sendQuickPrompt('Kenapa rumus Pythagoras cuma berlaku untuk sudut siku-siku 90 derajat?')" class="touch-action-btn bg-white hover:bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-lg border border-indigo-200 text-[11px] transition">
+                        Kenapa Hanya Siku-Siku? 🤔
+                    </button>
+                </div>
+
+                <div id="ai-chat-messages" class="flex-grow p-3.5 sm:p-6 space-y-3.5 overflow-y-auto max-h-[380px] sm:max-h-[460px]">
+                    <div class="flex items-start gap-2.5">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xs shrink-0 mt-0.5">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="bg-indigo-50/80 text-slate-800 p-3.5 rounded-2xl rounded-tl-none border border-indigo-100 max-w-xl text-xs sm:text-sm leading-relaxed">
+                            Halo sahabat matematika SMP! 👋 Saya <strong>Guru Pythagoras AI</strong>. Ada materi yang masih membingungkan atau ingin bantuan menyelesaikan soal segitiga siku-siku? 
+                            <br><br>
+                            Ketik pertanyaanmu di bawah yuk! Kamu juga bisa mengetik langsung angka soalmu, contoh: <em>"alas 6 tinggi 8 cari sisi miring"</em>.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3 sm:p-4 border-t border-slate-200 bg-white">
+                    <form onsubmit="handleChatSubmit(event)" class="flex gap-2">
+                        <input type="text" id="ai-chat-input" placeholder="Tulis pertanyaanmu di sini..." class="flex-grow px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-indigo-500 focus:bg-white transition" autocomplete="off">
+                        <button type="submit" id="ai-chat-send-btn" class="touch-action-btn px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold shadow-xs transition flex items-center gap-1.5 text-xs sm:text-sm shrink-0">
+                            <span>Kirim</span>
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Quest Generator -->
+            <div id="ai-view-quest" class="hidden bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-xs border border-slate-100 space-y-4 sm:space-y-6">
+                <div>
+                    <div class="inline-flex items-center gap-1.5 text-purple-600 text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-purple-50 px-3 py-1 rounded-full mb-1">
+                        <i class="fa-solid fa-sparkles"></i> Generator Misi Tematik
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-bold font-fredoka text-slate-800">Ciptakan Misi Cerita Pythagoras</h3>
+                    <p class="text-slate-600 text-xs sm:text-sm">Pilih tema petualangan di bawah untuk memunculkan tantangan cerita nyata baru!</p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
+                    <button type="button" onclick="selectQuestTheme('Bajak Laut Mencari Peti Harta')" class="quest-theme-btn p-3 rounded-2xl border-2 border-purple-500 bg-purple-50 text-left transition touch-action-btn" data-theme="Bajak Laut Mencari Peti Harta">
+                        <span class="text-lg sm:text-xl block mb-0.5">🏴‍☠️</span>
+                        <strong class="text-xs sm:text-sm text-slate-800 block leading-tight">Bajak Laut</strong>
+                        <span class="text-[10px] text-slate-500">Peti harta karun</span>
+                    </button>
+                    <button type="button" onclick="selectQuestTheme('Penjelajahan Luar Angkasa dan Roket')" class="quest-theme-btn p-3 rounded-2xl border-2 border-slate-200 hover:border-slate-300 text-left transition touch-action-btn" data-theme="Penjelajahan Luar Angkasa dan Roket">
+                        <span class="text-lg sm:text-xl block mb-0.5">🚀</span>
+                        <strong class="text-xs sm:text-sm text-slate-800 block leading-tight">Luar Angkasa</strong>
+                        <span class="text-[10px] text-slate-500">Docking stasiun orbit</span>
+                    </button>
+                    <button type="button" onclick="selectQuestTheme('Arsitektur Minecraft dan Bangunan')" class="quest-theme-btn p-3 rounded-2xl border-2 border-slate-200 hover:border-slate-300 text-left transition touch-action-btn" data-theme="Arsitektur Minecraft dan Bangunan">
+                        <span class="text-lg sm:text-xl block mb-0.5">🧱</span>
+                        <strong class="text-xs sm:text-sm text-slate-800 block leading-tight">Arsitek Game</strong>
+                        <span class="text-[10px] text-slate-500">Atap rumah & balok</span>
+                    </button>
+                    <button type="button" onclick="selectQuestTheme('Sepak Bola dan Taktik Operan')" class="quest-theme-btn p-3 rounded-2xl border-2 border-slate-200 hover:border-slate-300 text-left transition touch-action-btn" data-theme="Sepak Bola dan Taktik Operan">
+                        <span class="text-lg sm:text-xl block mb-0.5">⚽</span>
+                        <strong class="text-xs sm:text-sm text-slate-800 block leading-tight">Sepak Bola</strong>
+                        <span class="text-[10px] text-slate-500">Operan silang lapangan</span>
+                    </button>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 sm:p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                    <div class="text-xs text-slate-600">
+                        Tema Terpilih: <span id="current-selected-theme" class="font-bold text-purple-700">Bajak Laut Mencari Peti Harta</span>
+                    </div>
+                    <button id="btn-generate-quest" onclick="generateAIQuest()" class="touch-action-btn w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-xs transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Buat Soal Cerita Baru</span>
+                    </button>
+                </div>
+
+                <div id="quest-card" class="hidden bg-gradient-to-br from-slate-50 to-purple-50/40 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-purple-100 shadow-xs space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span id="quest-theme-badge" class="bg-purple-100 text-purple-800 text-[10px] sm:text-xs font-black px-2.5 py-1 rounded-full uppercase tracking-wider">
+                            Tema
+                        </span>
+                        <span class="text-[10px] text-slate-400"><i class="fa-solid fa-compass mr-1"></i> Soal Latihan</span>
+                    </div>
+                    <h4 id="quest-title" class="text-lg sm:text-xl font-bold font-fredoka text-slate-800">Judul Misi</h4>
+                    <p id="quest-description" class="text-slate-700 text-xs sm:text-sm leading-relaxed bg-white/80 p-3.5 sm:p-4 rounded-xl border border-slate-200/80 shadow-2xs">
+                        Memuat cerita...
+                    </p>
+
+                    <div id="quest-options" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+                    <div id="quest-feedback" class="hidden p-3.5 rounded-xl border text-xs sm:text-sm space-y-1"></div>
+                </div>
+
+                <div id="quest-loading" class="hidden py-8 sm:py-12 flex flex-col items-center justify-center text-center space-y-3">
+                    <div class="w-10 h-10 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+                    <p class="text-xs sm:text-sm font-semibold text-slate-600">Menyiapkan tantangan cerita dan angka yang pas...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 6: KATA-KATA MATEMATIKA, MOTIVASI & GOMBALAN ================= -->
+        <section id="tab-quotes" class="hidden space-y-4 sm:space-y-6">
+            <!-- Hero Banner Quotes -->
+            <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-r from-rose-500 via-pink-500 to-purple-600 text-white p-5 sm:p-8 shadow-xl">
+                <div class="absolute -right-8 -bottom-8 opacity-20 pointer-events-none hidden sm:block">
+                    <i class="fa-solid fa-heart-pulse text-[200px]"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="bg-white/20 text-rose-100 text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full inline-block mb-2 backdrop-blur-sm">
+                        <i class="fa-solid fa-sparkles mr-1"></i> Hiburan Edukatif & Pemantik Senyum
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold font-fredoka tracking-wide mb-1.5 leading-tight">
+                        10 Kata-Kata Matematika: Motivasi & Gombalan
+                    </h2>
+                    <p class="text-rose-100 text-xs sm:text-base leading-relaxed mb-4">
+                        Matematika bukan cuma rumus kaku dan angka rumit! Temukan inspirasi belajar yang membakar semangat serta gombalan segitiga siku-siku yang bikin tersenyum manis.
+                    </p>
+                    <div class="flex flex-wrap gap-2.5">
+                        <button onclick="pickRandomQuote()" class="touch-action-btn bg-white text-rose-700 hover:bg-rose-50 font-bold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-2 text-xs sm:text-sm">
+                            <i class="fa-solid fa-dice text-rose-500"></i> Ambil Kata Acak Hari Ini
+                        </button>
+                        <button onclick="filterQuotes('gombal')" class="touch-action-btn bg-rose-600/60 hover:bg-rose-600/80 text-white font-bold px-4 py-2 rounded-xl border border-white/20 transition flex items-center gap-2 text-xs sm:text-sm">
+                            <i class="fa-solid fa-heart"></i> Khusus Gombalan
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spotlight Random Card -->
+            <div id="random-quote-spotlight" class="hidden bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 text-white p-5 sm:p-6 rounded-2xl sm:rounded-3xl shadow-lg relative overflow-hidden transition-all duration-300">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="bg-white/25 text-white text-[10px] sm:text-xs font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1">
+                        <i class="fa-solid fa-star text-amber-200"></i> Kata Pilihanmu Hari Ini
+                    </span>
+                    <button onclick="document.getElementById('random-quote-spotlight').classList.add('hidden')" class="text-white/80 hover:text-white transition">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
+                <blockquote id="spotlight-text" class="text-base sm:text-xl font-bold font-fredoka italic leading-relaxed my-2 text-amber-50">
+                    "..."
+                </blockquote>
+                <div class="flex items-center justify-between pt-2 border-t border-white/20 text-xs">
+                    <span id="spotlight-author" class="font-semibold text-white/90">PythaQuest</span>
+                    <button id="spotlight-copy-btn" class="touch-action-btn px-3 py-1 bg-white text-rose-700 rounded-lg font-bold text-[11px] shadow-sm flex items-center gap-1 hover:bg-rose-50">
+                        <i class="fa-regular fa-copy"></i> Salin
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="bg-white rounded-2xl p-3 sm:p-4 shadow-xs border border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-1.5 overflow-x-auto text-xs">
+                    <button onclick="filterQuotes('all')" id="filter-btn-all" class="quote-filter-btn px-3.5 py-2 rounded-xl bg-rose-500 text-white font-bold transition touch-action-btn whitespace-nowrap">
+                        Semua (10)
+                    </button>
+                    <button onclick="filterQuotes('motivasi')" id="filter-btn-motivasi" class="quote-filter-btn px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold transition touch-action-btn whitespace-nowrap">
+                        💡 Motivasi (5)
+                    </button>
+                    <button onclick="filterQuotes('gombal')" id="filter-btn-gombal" class="quote-filter-btn px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold transition touch-action-btn whitespace-nowrap">
+                        ❤️ Gombalan (5)
+                    </button>
+                </div>
+                <div class="text-[11px] text-slate-500 flex items-center gap-1.5">
+                    <i class="fa-solid fa-copy text-rose-500"></i> Klik ikon salin untuk bagikan ke teman!
+                </div>
+            </div>
+
+            <!-- Grid 10 Quotes Cards -->
+            <div id="quotes-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Data cards will be rendered dynamically by JavaScript -->
+            </div>
+        </section>
+
+        <!-- ================= TAB 7: IDENTITAS PENGEMBANG & DOSEN PEMBIMBING ================= -->
+        <section id="tab-identitas" class="hidden space-y-5 sm:space-y-7">
+            <!-- Hero Banner Identitas -->
+            <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-r from-teal-700 via-emerald-700 to-cyan-800 text-white p-5 sm:p-8 shadow-xl">
+                <div class="absolute -right-8 -bottom-8 opacity-15 pointer-events-none hidden sm:block">
+                    <i class="fa-solid fa-graduation-cap text-[200px]"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="bg-white/20 text-teal-100 text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full inline-block mb-2 backdrop-blur-sm">
+                        <i class="fa-solid fa-users mr-1"></i> Tim Pengembang Media Pembelajaran
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold font-fredoka tracking-wide mb-2 leading-tight">
+                        Identitas Pengembang & Pembimbing
+                    </h2>
+                    <p class="text-teal-100 text-xs sm:text-base leading-relaxed">
+                        Media pembelajaran matematika interaktif <strong>PythaQuest (Petualangan Teorema Pythagoras)</strong> ini disusun dan dikembangkan sebagai sarana belajar aktif, kontekstual, dan menyenangkan bagi peserta didik SMP Kelas 8.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Kartu Dosen Pembimbing -->
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-xs border border-teal-100 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-full -mr-10 -mt-10 pointer-events-none"></div>
+                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 relative z-10">
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-tr from-teal-600 to-emerald-500 p-1 shadow-md shrink-0 flex items-center justify-center">
+                        <div class="w-full h-full rounded-xl bg-white flex items-center justify-center text-teal-700 text-3xl sm:text-4xl shadow-inner">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                    </div>
+                    <div class="text-center sm:text-left space-y-1.5 flex-1">
+                        <span class="bg-teal-100 text-teal-800 text-[11px] font-bold px-3 py-1 rounded-full inline-block">
+                            <i class="fa-solid fa-award mr-1"></i> Dosen Pembimbing
+                        </span>
+                        <h3 class="text-lg sm:text-2xl font-bold font-fredoka text-slate-800">
+                            Rahma Ramadhani, M.Pd.
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl">
+                            Pembimbing penyusunan materi, metodologi pedagogis, serta perancangan media pembelajaran interaktif matematika berbasis Kurikulum Merdeka.
+                        </p>
+                        <div class="pt-2 flex flex-wrap justify-center sm:justify-start gap-2 text-[11px] text-teal-700">
+                            <span class="bg-slate-100 px-2.5 py-1 rounded-lg font-medium"><i class="fa-solid fa-book-open mr-1"></i> Pendidikan Matematika</span>
+                            <span class="bg-slate-100 px-2.5 py-1 rounded-lg font-medium"><i class="fa-solid fa-laptop-code mr-1"></i> Media & Teknologi Pembelajaran</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kartu Mahasiswa Pengembang (2 Kolom) -->
+            <div>
+                <div class="flex items-center gap-2 mb-3.5">
+                    <div class="w-2 h-6 bg-teal-600 rounded-full"></div>
+                    <h3 class="text-base sm:text-xl font-bold font-fredoka text-slate-800">Mahasiswa Pengembang</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    <!-- Kartu Usman Riyanto -->
+                    <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-xs border border-slate-200 hover:shadow-md hover:border-teal-300 transition duration-200 flex flex-col justify-between">
+                        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+                            <div class="w-28 h-36 sm:w-32 sm:h-40 rounded-2xl overflow-hidden shadow-md shrink-0 border-2 border-slate-100 bg-slate-100">
+                                <img src="g.jpeg" alt="Foto Usman Riyanto" class="w-full h-full object-cover object-top" onerror="this.onerror=null; this.src='https://placehold.co/300x400/0f766e/ffffff?text=Usman+Riyanto';">
+                            </div>
+                            <div class="text-center sm:text-left space-y-1.5 flex-1">
+                                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full inline-block">
+                                    Pengembang 1
+                                </span>
+                                <h4 class="text-lg sm:text-xl font-bold font-fredoka text-slate-800">
+                                    Usman Riyanto
+                                </h4>
+                                <div class="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3 py-1 rounded-xl text-xs font-mono font-bold text-slate-700">
+                                    <i class="fa-solid fa-id-badge text-teal-600"></i>
+                                    <span>NIM: 2597214006</span>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed pt-1">
+                                    Fokus pada perancangan logika interaktif, visualisasi kanvas segitiga, implementasi kalkulasi Pythagoras, dan sistem simulasi game.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-graduation-cap text-teal-600"></i> Mahasiswa Pengembang</span>
+                            <span class="text-teal-700 font-semibold text-[11px]">PythaQuest Team</span>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Fitri Puspita Anggraini -->
+                    <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-xs border border-slate-200 hover:shadow-md hover:border-teal-300 transition duration-200 flex flex-col justify-between">
+                        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+                            <div class="w-28 h-36 sm:w-32 sm:h-40 rounded-2xl overflow-hidden shadow-md shrink-0 border-2 border-slate-100 bg-slate-100">
+                                <img src="y.jpeg" alt="Foto Fitri Puspita Anggraini" class="w-full h-full object-cover object-top" onerror="this.onerror=null; this.src='https://placehold.co/300x400/047857/ffffff?text=Fitri+Puspita';">
+                            </div>
+                            <div class="text-center sm:text-left space-y-1.5 flex-1">
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full inline-block">
+                                    Pengembang 2
+                                </span>
+                                <h4 class="text-lg sm:text-xl font-bold font-fredoka text-slate-800">
+                                    Fitri Puspita Anggraini
+                                </h4>
+                                <div class="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3 py-1 rounded-xl text-xs font-mono font-bold text-slate-700">
+                                    <i class="fa-solid fa-id-badge text-emerald-600"></i>
+                                    <span>NIM: 2597214004</span>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed pt-1">
+                                    Fokus pada penyusunan modul materi pembelajaran, kurasi soal kontekstual, desain antarmuka responsif pengguna, serta integrasi evaluasi kuis.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-graduation-cap text-emerald-600"></i> Mahasiswa Pengembang</span>
+                            <span class="text-emerald-700 font-semibold text-[11px]">PythaQuest Team</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Modul & Hak Cipta Edukasi -->
+            <div class="bg-gradient-to-br from-slate-50 to-teal-50/40 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-200 text-xs sm:text-sm text-slate-700 space-y-2">
+                <div class="flex items-center gap-2 font-bold text-slate-800 text-sm">
+                    <i class="fa-solid fa-circle-info text-teal-600"></i>
+                    <span>Tentang Media Pembelajaran PythaQuest</span>
+                </div>
+                <p class="leading-relaxed text-slate-600 text-xs sm:text-sm">
+                    Aplikasi ini dirancang sebagai inovasi media ajar interaktif untuk materi <strong>Teorema Pythagoras (Matematika Fase D / Kelas 8 SMP)</strong>. Dilengkapi visualisasi geometri dinamis, simulasi pemecahan masalah kehidupan nyata, kuis evaluasi berbasis penalaran, serta asisten edukasi berbasis AI.
+                </p>
+                <div class="pt-2 text-[11px] text-slate-500">
+                    © Hak Cipta Karya Pembelajaran Matematika • Usman Riyanto & Fitri Puspita Anggraini
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 sm:py-6 mt-4">
+        <div class="max-w-7xl mx-auto px-4 text-center text-[11px] sm:text-xs text-slate-500 space-y-1">
+            <p class="font-medium text-slate-600">Media Pembelajaran Interaktif Matematika SMP Kelas 8 - Teorema Pythagoras</p>
+            <p>Didesain ramah pengguna, mendukung tampilan ponsel (*mobile*) dan komputer (*desktop*).</p>
+        </div>
+    </footer>
+
+    <!-- MODAL POPUP: RIWAYAT LENGKAP SEJARAH & BIOGRAFI PYTHAGORAS -->
+    <div id="modal-history" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5 hidden">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-5 sm:p-7 shadow-2xl border border-amber-100 max-h-[90vh] overflow-y-auto space-y-4">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-100 sticky top-0 bg-white z-10">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-scroll"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold font-fredoka text-slate-800 text-base sm:text-lg">Kisah Hidup & Sejarah Pythagoras</h3>
+                        <p class="text-[11px] text-slate-500">Mengenal sang perintis matematika Yunani Kuno</p>
+                    </div>
+                </div>
+                <button onclick="closeHistoryModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <div class="bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200/80 flex items-center gap-3">
+                    <div class="text-2xl text-amber-600 shrink-0">🏛️</div>
+                    <div>
+                        <strong class="text-amber-900">Kelahiran di Pulau Samos:</strong><br>
+                        Pythagoras dilahirkan sekitar tahun <strong>570 Sebelum Masehi</strong> di pulau Samos, Yunani. Ayahnya bernama Mnesarchus, seorang saudagar permata yang terpandang.
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-1 flex items-center gap-1.5 text-amber-700">
+                        <i class="fa-solid fa-compass"></i> Mengembara Demi Menuntut Ilmu
+                    </h4>
+                    <p class="text-slate-600">
+                        Sejak muda, Pythagoras sangat gemar belajar. Untuk memperdalam ilmu pengetahuan, ia mengarungi lautan menuju <strong>Mesir</strong> dan <strong>Babilonia</strong>. Di sana, ia belajar dari para pendeta kuil tentang astronomi, geometri pengukuran tanah, mistisisme bilangan, serta cara bangsa Babilonia menghitung luas tanah.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-1 flex items-center gap-1.5 text-amber-700">
+                        <i class="fa-solid fa-users"></i> Mazhab Kroton & "Semua Adalah Bilangan"
+                    </h4>
+                    <p class="text-slate-600">
+                        Setelah kembali dari pengembaraan, Pythagoras hijrah ke kota <strong>Kroton</strong> (wilayah Italia Selatan sekarang). Di sanalah ia mendirikan persaudaraan filosofis yang dikenal sebagai <em>Mazhab Pythagoras</em>. Komunitas ini menjunjung tinggi doktrin bahwa <strong>seluruh rahasia alam semesta diatur oleh pola matematika dan perbandingan bilangan bulat</strong>.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-1 flex items-center gap-1.5 text-amber-700">
+                        <i class="fa-solid fa-guitar"></i> Penemuan Harmoni Musik
+                    </h4>
+                    <p class="text-slate-600">
+                        Selain geometri segitiga, Pythagoras juga menemukan bahwa nada-nada indah pada dawai musik bergantung pada perbandingan panjang senar matematis yang harmonis (rasio 2:1 untuk satu oktaf, 3:2 untuk nada kelima, dan 4:3 untuk nada keempat).
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex justify-end">
+                <button onclick="closeHistoryModal()" class="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-xl text-xs sm:text-sm transition">
+                    Tutup Bacaan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POPUP: TUJUAN PEMBELAJARAN LENGKAP -->
+    <div id="modal-tp" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5 hidden">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-5 sm:p-7 shadow-2xl border border-emerald-100 max-h-[90vh] overflow-y-auto space-y-4">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold font-fredoka text-slate-800 text-base sm:text-lg">Tujuan Pembelajaran</h3>
+                        <p class="text-[11px] text-slate-500">Matematika SMP Kelas 8 - Fase D</p>
+                    </div>
+                </div>
+                <button onclick="toggleTpModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <div class="p-3 bg-blue-50/80 rounded-xl border border-blue-200">
+                    <strong class="text-blue-900">1. Konsep & Anatomi:</strong>
+                    <p class="text-slate-600 mt-0.5">Memahami dan mengidentifikasi sisi-sisi pada segitiga siku-siku (sisi alas a, sisi tegak b, serta hipotenusa c).</p>
+                </div>
+                <div class="p-3 bg-emerald-50/80 rounded-xl border border-emerald-200">
+                    <strong class="text-emerald-900">2. Pembuktian & Perhitungan:</strong>
+                    <p class="text-slate-600 mt-0.5">Membuktikan teorema secara visual luas persegi dan menghitung panjang sisi menggunakan rumus <strong>a² + b² = c²</strong>.</p>
+                </div>
+                <div class="p-3 bg-purple-50/80 rounded-xl border border-purple-200">
+                    <strong class="text-purple-900">3. Menemukan Tripel Pythagoras:</strong>
+                    <p class="text-slate-600 mt-0.5">Mengenal dan menguji kelompok tiga bilangan bulat yang memenuhi hubungan kuadrat sisi segitiga siku-siku.</p>
+                </div>
+                <div class="p-3 bg-amber-50/80 rounded-xl border border-amber-200">
+                    <strong class="text-amber-900">4. Pemecahan Masalah Nyata:</strong>
+                    <p class="text-slate-600 mt-0.5">Mengaplikasikan rumus Pythagoras dalam konteks kehidupan sehari-hari (tangga gedung, jembatan jurang, navigasi).</p>
+                </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex justify-end">
+                <button onclick="toggleTpModal()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs sm:text-sm transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-16 sm:bottom-6 right-4 sm:right-6 bg-slate-900 text-white px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl shadow-xl flex items-center gap-2.5 transition-transform duration-300 transform translate-y-28 z-50 pointer-events-none text-xs sm:text-sm">
+        <i id="toast-icon" class="fa-solid fa-info-circle text-emerald-400"></i>
+        <span id="toast-msg" class="font-medium">Pemberitahuan</span>
+    </div>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        /* Audio Synthesizer with Tone.js */
+        let soundEnabled = true;
+        let synth = null;
+
+        function initSynth() {
+            if (!synth && window.Tone) {
+                try {
+                    synth = new Tone.PolySynth(Tone.Synth, {
+                        oscillator: { type: "triangle" },
+                        envelope: { attack: 0.02, decay: 0.1, sustain: 0.2, release: 0.3 }
+                    }).toDestination();
+                    synth.volume.value = -8;
+                } catch (e) {
+                    console.warn("Tone.js init error:", e);
+                }
+            }
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                if (window.Tone && Tone.context.state !== 'running') {
+                    Tone.start();
+                }
+                initSynth();
+                if (!synth) return;
+                if (type === 'click') {
+                    synth.triggerAttackRelease("C5", "32n");
+                } else if (type === 'success') {
+                    const now = Tone.now();
+                    synth.triggerAttackRelease("C5", "16n", now);
+                    synth.triggerAttackRelease("E5", "16n", now + 0.08);
+                    synth.triggerAttackRelease("G5", "16n", now + 0.16);
+                    synth.triggerAttackRelease("C6", "8n", now + 0.24);
+                } else if (type === 'error') {
+                    const now = Tone.now();
+                    synth.triggerAttackRelease("F4", "16n", now);
+                    synth.triggerAttackRelease("D4", "8n", now + 0.12);
+                } else if (type === 'bridge-fall') {
+                    synth.triggerAttackRelease("A3", "4n");
+                }
+            } catch (e) {
+                console.warn("Audio play warning:", e);
+            }
+        }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('audio-icon');
+            if (soundEnabled) {
+                icon.className = "fa-solid fa-volume-high text-sm sm:text-base";
+                showToast("Suara diaktifkan", "success");
+                playSound('click');
+            } else {
+                icon.className = "fa-solid fa-volume-xmark text-sm sm:text-base";
+                showToast("Suara dinonaktifkan", "info");
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.textContent = message;
+            if (type === 'success') {
+                toastIcon.className = "fa-solid fa-circle-check text-emerald-400";
+            } else if (type === 'error') {
+                toastIcon.className = "fa-solid fa-circle-xmark text-red-400";
+            } else {
+                toastIcon.className = "fa-solid fa-circle-info text-blue-400";
+            }
+
+            toast.classList.remove('translate-y-28');
+            toast.classList.add('translate-y-0');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0');
+                toast.classList.add('translate-y-28');
+            }, 2500);
+        }
+
+        /* Navigasi Tab Utama */
+        function switchTab(tabId) {
+            playSound('click');
+            const tabs = ['materi', 'lab', 'game', 'kuis', 'ai', 'quotes', 'identitas'];
+            tabs.forEach(t => {
+                const section = document.getElementById('tab-' + t);
+                const desktopBtn = document.getElementById('desktop-nav-btn-' + t);
+                const mobileBtn = document.getElementById('mobile-nav-btn-' + t);
+
+                if (!section) return;
+
+                if (t === tabId) {
+                    section.classList.remove('hidden');
+                    if (desktopBtn) {
+                        const activeColorClass = (t === 'quotes') 
+                            ? 'text-rose-700 bg-rose-50' 
+                            : (t === 'ai') 
+                            ? 'text-indigo-700 bg-indigo-50' 
+                            : (t === 'identitas')
+                            ? 'text-teal-700 bg-teal-50'
+                            : 'text-emerald-700 bg-emerald-50';
+                        desktopBtn.className = `px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${activeColorClass} flex items-center gap-2`;
+                    }
+                    if (mobileBtn) {
+                        mobileBtn.classList.remove('text-slate-400');
+                        const activeMobileColor = (t === 'quotes') 
+                            ? 'text-rose-600' 
+                            : (t === 'ai') 
+                            ? 'text-indigo-600' 
+                            : (t === 'identitas')
+                            ? 'text-teal-600'
+                            : 'text-emerald-600';
+                        mobileBtn.classList.add(activeMobileColor, 'font-bold');
+                    }
+                } else {
+                    section.classList.add('hidden');
+                    if (desktopBtn) desktopBtn.className = "px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-emerald-600 hover:bg-slate-50 flex items-center gap-2";
+                    if (mobileBtn) {
+                        mobileBtn.classList.add('text-slate-400');
+                        mobileBtn.classList.remove('text-emerald-600', 'text-rose-600', 'text-indigo-600', 'text-teal-600', 'font-bold');
+                    }
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (tabId === 'lab') {
+                updateLab();
+            } else if (tabId === 'game') {
+                updateGameUI();
+                drawGameScene();
+            } else if (tabId === 'quotes') {
+                renderQuotesList('all');
+            }
+        }
+
+        /* Modal Helpers */
+        function openHistoryModal() {
+            playSound('click');
+            document.getElementById('modal-history').classList.remove('hidden');
+        }
+
+        function closeHistoryModal() {
+            playSound('click');
+            document.getElementById('modal-history').classList.add('hidden');
+        }
+
+        function toggleTpModal() {
+            playSound('click');
+            const modal = document.getElementById('modal-tp');
+            modal.classList.toggle('hidden');
+        }
+
+        function toggleTPDetail(bodyId, arrowId) {
+            playSound('click');
+            const body = document.getElementById(bodyId);
+            const arrow = document.getElementById(arrowId);
+            if (!body) return;
+
+            if (body.classList.contains('hidden')) {
+                body.classList.remove('hidden');
+                if (arrow) arrow.classList.add('rotate-180');
+            } else {
+                body.classList.add('hidden');
+                if (arrow) arrow.classList.remove('rotate-180');
+            }
+        }
+
+        /* TAB 1: Visual Proof Helpers */
+        function setProofExample(a, b) {
+            playSound('click');
+            const c = Math.sqrt(a * a + b * b);
+            
+            document.querySelectorAll('.proof-preset-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'shadow-xs', 'text-emerald-700');
+                btn.classList.add('text-slate-600');
+            });
+            const activeBtn = document.getElementById(`preset-${a}-${b}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'shadow-xs', 'text-emerald-700');
+                activeBtn.classList.remove('text-slate-600');
+            }
+
+            document.getElementById('proof-val-a').textContent = a;
+            document.getElementById('proof-sq-a').textContent = a * a;
+            document.getElementById('proof-val-b').textContent = b;
+            document.getElementById('proof-sq-b').textContent = b * b;
+            document.getElementById('proof-val-c').textContent = Number.isInteger(c) ? c : c.toFixed(2);
+            document.getElementById('proof-sq-c').textContent = Math.round(c * c);
+            document.getElementById('proof-calc-step').textContent = `${a * a} + ${b * b} = ${Math.round(c * c)}`;
+
+            renderProofSVG(a, b);
+        }
+
+        function renderProofSVG(a, b) {
+            const container = document.getElementById('proof-svg-container');
+            const scale = 17; 
+            const ox = 145;
+            const oy = 250;
+
+            const ax = a * scale;
+            const by = b * scale;
+            
+            const svgHtml = `
+                <svg viewBox="0 0 360 340" class="w-full max-w-[320px] sm:max-w-[360px] h-auto select-none">
+                    <rect x="${ox}" y="${oy - 12}" width="12" height="12" fill="none" stroke="#64748b" stroke-width="2"/>
+                    <polygon points="${ox},${oy} ${ox + ax},${oy} ${ox},${oy - by}" fill="#f1f5f9" stroke="#334155" stroke-width="2.5" />
+                    
+                    <rect x="${ox}" y="${oy}" width="${ax}" height="${ax}" fill="#3b82f6" fill-opacity="0.25" stroke="#2563eb" stroke-width="2" stroke-dasharray="3,3" />
+                    <text x="${ox + ax/2}" y="${oy + ax/2 + 4}" fill="#1e40af" font-weight="bold" font-size="12" text-anchor="middle">a² = ${a*a}</text>
+
+                    <rect x="${ox - by}" y="${oy - by}" width="${by}" height="${by}" fill="#10b981" fill-opacity="0.25" stroke="#059669" stroke-width="2" stroke-dasharray="3,3" />
+                    <text x="${ox - by/2}" y="${oy - by/2 + 4}" fill="#065f46" font-weight="bold" font-size="12" text-anchor="middle">b² = ${b*b}</text>
+
+                    <text x="${ox + ax/2 - 10}" y="${oy - by/2 - 8}" fill="#9333ea" font-weight="bold" font-size="13" text-anchor="middle">c = ${Math.round(Math.sqrt(a*a+b*b))}</text>
+                    <text x="${ox + 16}" y="${oy - 16}" fill="#64748b" font-size="10">90°</text>
+                </svg>
+            `;
+            container.innerHTML = svgHtml;
+        }
+
+        /* TAB 2: Lab Logic */
+        function stepSlider(sliderId, stepAmount) {
+            playSound('click');
+            const slider = document.getElementById(sliderId);
+            const current = parseInt(slider.value);
+            const min = parseInt(slider.min);
+            const max = parseInt(slider.max);
+            const nextVal = Math.min(Math.max(current + stepAmount, min), max);
+            slider.value = nextVal;
+            updateLab();
+        }
+
+        function updateLab() {
+            const a = parseInt(document.getElementById('slider-a').value);
+            const b = parseInt(document.getElementById('slider-b').value);
+
+            document.getElementById('label-a').textContent = a + " cm";
+            document.getElementById('label-b').textContent = b + " cm";
+
+            const a2 = a * a;
+            const b2 = b * b;
+            const c2 = a2 + b2;
+            const c = Math.sqrt(c2);
+
+            document.getElementById('calc-a2').textContent = `${a}²`;
+            document.getElementById('calc-b2').textContent = `${b}²`;
+            document.getElementById('calc-a2-val').textContent = a2;
+            document.getElementById('calc-b2-val').textContent = b2;
+            document.getElementById('calc-sum').textContent = c2;
+            document.getElementById('calc-sum-2').textContent = c2;
+            document.getElementById('calc-final-c').textContent = Number.isInteger(c) ? `${c} cm` : `${c.toFixed(2)} cm`;
+
+            const tripleBadge = document.getElementById('is-triple-badge');
+            if (Number.isInteger(c)) {
+                tripleBadge.className = "bg-emerald-500/30 text-emerald-300 px-2 py-0.5 rounded text-[10px] sm:text-xs font-sans font-semibold";
+                tripleBadge.textContent = `Tripel Pas! (${a}, ${b}, ${c})`;
+            } else {
+                tripleBadge.className = "bg-amber-500/30 text-amber-300 px-2 py-0.5 rounded text-[10px] sm:text-xs font-sans font-semibold";
+                tripleBadge.textContent = `Bukan Bilangan Bulat`;
+            }
+
+            drawLabCanvas(a, b, c);
+        }
+
+        function resetLab() {
+            playSound('click');
+            document.getElementById('slider-a').value = 6;
+            document.getElementById('slider-b').value = 8;
+            updateLab();
+            showToast("Ukuran lab diatur ulang ke 6 & 8 cm", "info");
+        }
+
+        function drawLabCanvas(a, b, c) {
+            const canvas = document.getElementById('labCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const scale = Math.min(240 / Math.max(a, b), 16);
+            const ox = 70;
+            const oy = 310;
+
+            const w = a * scale;
+            const h = b * scale;
+
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 0.5;
+            for (let x = 20; x < canvas.width; x += 25) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 20; y < canvas.height; y += 25) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(ox, oy - 15, 15, 15);
+
+            ctx.beginPath();
+            ctx.moveTo(ox, oy);
+            ctx.lineTo(ox + w, oy);
+            ctx.lineTo(ox, oy - h);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.15)';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(ox, oy);
+            ctx.lineTo(ox + w, oy);
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(ox, oy);
+            ctx.lineTo(ox, oy - h);
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(ox, oy - h);
+            ctx.lineTo(ox + w, oy);
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 5;
+            ctx.stroke();
+
+            ctx.font = 'bold 13px Poppins, sans-serif';
+            ctx.fillStyle = '#60a5fa';
+            ctx.textAlign = 'center';
+            ctx.fillText(`a = ${a} cm`, ox + w / 2, oy + 24);
+
+            ctx.fillStyle = '#34d399';
+            ctx.textAlign = 'right';
+            ctx.fillText(`b = ${b} cm`, ox - 10, oy - h / 2);
+
+            ctx.fillStyle = '#fbbf24';
+            ctx.textAlign = 'center';
+            const midX = (ox + ox + w) / 2 + 15;
+            const midY = (oy + oy - h) / 2 - 10;
+            ctx.fillText(`c = ${Number.isInteger(c) ? c : c.toFixed(1)} cm`, midX, midY);
+        }
+
+        /* TAB 3: Game Logic Multi-Tema Dinamis */
+        const gameLevels = [
+            {
+                level: 1,
+                themeTag: "Misi 1: Jembatan Jurang",
+                icon: "fa-person-walking",
+                title: "Bantu Robi Menyeberangi Jurang!",
+                desc: "Hitung panjang jembatan kayu (c) agar Robi bisa menyeberang tebing dengan aman!",
+                labelA: "Lebar Jurang (a)",
+                labelB: "Beda Tinggi (b)",
+                unit: "meter",
+                a: 6, b: 8, c: 10,
+                hint: "Tebing: a = 6m, b = 8m. Kuadratkan: 6² + 8² = 36 + 64 = 100. √100 = 10 meter!",
+                quickOptions: [8, 10, 12, 14],
+                actionText: "Pasang Jembatan!",
+                actionIcon: "fa-hammer"
+            },
+            {
+                level: 2,
+                themeTag: "Misi 2: Pemadam Kebakaran",
+                icon: "fa-fire-extinguisher",
+                title: "Selamatkan Kucing di Gedung!",
+                desc: "Mobil pemadam berada 9 meter dari dinding gedung. Kucing di jendela setinggi 12 meter. Berapa panjang tangga (c) yang harus diulurkan?",
+                labelA: "Jarak Mobil (a)",
+                labelB: "Tinggi Jendela (b)",
+                unit: "meter",
+                a: 9, b: 12, c: 15,
+                hint: "Tangga: a = 9m, b = 12m. Kuadratkan: 9² + 12² = 81 + 144 = 225. √225 = 15 meter!",
+                quickOptions: [13, 14, 15, 18],
+                actionText: "Bentangkan Tangga!",
+                actionIcon: "fa-truck-medical"
+            },
+            {
+                level: 3,
+                themeTag: "Misi 3: Peluncuran Roket",
+                icon: "fa-rocket",
+                title: "Luncurkan Roket ke Stasiun Orbit!",
+                desc: "Stasiun ruang angkasa berada 12 km mendatar dan 5 km ke atas. Hitung jarak tempuh lintasan lurus roket (c)!",
+                labelA: "Jarak Datar (a)",
+                labelB: "Ketinggian (b)",
+                unit: "km",
+                a: 12, b: 5, c: 13,
+                hint: "Lintasan Roket: a = 12km, b = 5km. 12² + 5² = 144 + 25 = 169. √169 = 13 km (Tripel 5, 12, 13)!",
+                quickOptions: [11, 13, 15, 17],
+                actionText: "Luncurkan Roket!",
+                actionIcon: "fa-shuttle-space"
+            },
+            {
+                level: 4,
+                themeTag: "Misi 4: Sorotan Mercusuar",
+                icon: "fa-lightbulb",
+                title: "Arahkan Sorot Lampu Mercusuar!",
+                desc: "Lampu menara mercusuar berada di puncak setinggi 15 meter. Perahu nelayan berada 8 meter dari kaki menara. Berapa jarak sorot sinar (c)?",
+                labelA: "Jarak Perahu (a)",
+                labelB: "Tinggi Menara (b)",
+                unit: "meter",
+                a: 8, b: 15, c: 17,
+                hint: "Sorotan Lampu: a = 8m, b = 15m. 8² + 15² = 64 + 225 = 289. √289 = 17 meter (Tripel 8, 15, 17)!",
+                quickOptions: [15, 16, 17, 23],
+                actionText: "Sorot Lampu!",
+                actionIcon: "fa-bolt"
+            },
+            {
+                level: 5,
+                themeTag: "Misi 5: Flying Fox di Hutan",
+                icon: "fa-tree",
+                title: "Pasang Kawat Luncur Flying Fox!",
+                desc: "Rumah pohon bertengger setinggi 24 meter dan area pendaratan tenda berjarak 7 meter. Berapa panjang kawat luncur (c) yang dibutuhkan?",
+                labelA: "Jarak Tenda (a)",
+                labelB: "Tinggi Pohon (b)",
+                unit: "meter",
+                a: 7, b: 24, c: 25,
+                hint: "Kawat Flying Fox: a = 7m, b = 24m. 7² + 24² = 49 + 576 = 625. √625 = 25 meter (Tripel 7, 24, 25)!",
+                quickOptions: [21, 24, 25, 31],
+                actionText: "Meluncur Cepat!",
+                actionIcon: "fa-person-skiing"
+            }
+        ];
+
+        let currentLevel = 0;
+        let gameScore = 0;
+        let gameLives = 3;
+        let isAnimating = false;
+
+        function initGame() {
+            currentLevel = 0;
+            gameScore = 0;
+            gameLives = 3;
+            updateGameUI();
+            drawGameScene();
+        }
+
+        function setGameInput(val) {
+            playSound('click');
+            document.getElementById('game-input-c').value = val;
+        }
+
+        function updateGameUI() {
+            const levelData = gameLevels[currentLevel];
+            document.getElementById('game-score').textContent = gameScore;
+            document.getElementById('game-level').textContent = `${currentLevel + 1} / ${gameLevels.length}`;
+            
+            document.getElementById('game-theme-tag').textContent = levelData.themeTag;
+            document.getElementById('game-theme-icon').className = `fa-solid ${levelData.icon}`;
+            document.getElementById('game-main-title').textContent = levelData.title;
+            document.getElementById('game-main-desc').textContent = levelData.desc;
+            document.getElementById('game-quest-label-a').textContent = levelData.labelA;
+            document.getElementById('game-quest-label-b').textContent = levelData.labelB;
+            document.getElementById('game-input-unit').textContent = levelData.unit;
+            document.getElementById('game-quest-a').textContent = `${levelData.a} ${levelData.unit === 'km' ? 'km' : 'm'}`;
+            document.getElementById('game-quest-b').textContent = `${levelData.b} ${levelData.unit === 'km' ? 'km' : 'm'}`;
+            document.getElementById('btn-action-text').textContent = levelData.actionText;
+            document.getElementById('btn-action-icon').className = `fa-solid ${levelData.actionIcon}`;
+
+            document.getElementById('game-input-c').value = '';
+            document.getElementById('game-hint-text').classList.add('hidden');
+            document.getElementById('hint-content').textContent = levelData.hint;
+
+            const quickContainer = document.getElementById('game-quick-options');
+            quickContainer.innerHTML = '';
+            levelData.quickOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "px-3 py-1 bg-white border border-slate-200 hover:border-amber-400 rounded-lg font-mono font-bold touch-action-btn";
+                btn.textContent = opt;
+                btn.onclick = () => setGameInput(opt);
+                quickContainer.appendChild(btn);
+            });
+
+            const livesContainer = document.getElementById('game-lives');
+            livesContainer.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                if (i < gameLives) {
+                    livesContainer.innerHTML += '<i class="fa-solid fa-heart text-red-500"></i>';
+                } else {
+                    livesContainer.innerHTML += '<i class="fa-regular fa-heart text-slate-300"></i>';
+                }
+            }
+        }
+
+        function getGameHint() {
+            playSound('click');
+            const hintBox = document.getElementById('game-hint-text');
+            hintBox.classList.toggle('hidden');
+        }
+
+        function testBridge() {
+            if (isAnimating) return;
+            const inputVal = parseFloat(document.getElementById('game-input-c').value);
+            if (isNaN(inputVal) || inputVal <= 0) {
+                showToast("Masukkan angka perhitungan terlebih dahulu!", "error");
+                playSound('error');
+                return;
+            }
+
+            const targetC = gameLevels[currentLevel].c;
+            const isCorrect = Math.abs(inputVal - targetC) < 0.1;
+
+            isAnimating = true;
+            document.getElementById('btn-test-bridge').disabled = true;
+
+            playSound('click');
+            runBridgeAnimation(inputVal, isCorrect);
+        }
+
+        function runBridgeAnimation(userInput, isSuccess) {
+            const duration = 1000;
+            const startTime = performance.now();
+
+            function animate(time) {
+                const elapsed = time - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                drawGameScene(userInput, progress);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    runHeroWalkAnimation(userInput, isSuccess);
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        function runHeroWalkAnimation(userInput, success) {
+            const walkDuration = 1500;
+            const startTime = performance.now();
+
+            function walkAnimate(time) {
+                const elapsed = time - startTime;
+                const progress = Math.min(elapsed / walkDuration, 1);
+
+                drawGameScene(userInput, 1, progress, success);
+
+                if (progress < 1) {
+                    requestAnimationFrame(walkAnimate);
+                } else {
+                    isAnimating = false;
+                    document.getElementById('btn-test-bridge').disabled = false;
+                    handleGameResult(success);
+                }
+            }
+            requestAnimationFrame(walkAnimate);
+        }
+
+        function handleGameResult(success) {
+            if (success) {
+                playSound('success');
+                confetti({ particleCount: 75, spread: 70, origin: { y: 0.6 } });
+                gameScore += 20;
+                document.getElementById('game-score').textContent = gameScore;
+
+                if (currentLevel < gameLevels.length - 1) {
+                    const overlay = document.getElementById('game-feedback-overlay');
+                    document.getElementById('feedback-title').textContent = "Misi Berhasil!";
+                    document.getElementById('feedback-desc').textContent = "Kerja bagus! Panjang hipotenusa yang kamu hitung tepat sekali.";
+                    overlay.classList.remove('hidden');
+                } else {
+                    document.getElementById('game-win-overlay').classList.remove('hidden');
+                }
+            } else {
+                playSound('bridge-fall');
+                gameLives--;
+                updateGameUI();
+
+                if (gameLives <= 0) {
+                    document.getElementById('game-over-overlay').classList.remove('hidden');
+                } else {
+                    showToast("Ukuran belum pas! Cek hitungan kuadratmu kembali.", "error");
+                }
+            }
+        }
+
+        function nextGameLevel() {
+            playSound('click');
+            document.getElementById('game-feedback-overlay').classList.add('hidden');
+            currentLevel++;
+            updateGameUI();
+            drawGameScene();
+        }
+
+        function restartGame() {
+            playSound('click');
+            document.getElementById('game-over-overlay').classList.add('hidden');
+            document.getElementById('game-win-overlay').classList.add('hidden');
+            initGame();
+        }
+
+        function drawGameScene(userLength = null, deployProg = 1, moveProg = 0, moveSuccess = true) {
+            const canvas = document.getElementById('gameCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const lvl = currentLevel;
+            if (lvl === 0) {
+                drawSceneLevel1(ctx, canvas, userLength, deployProg, moveProg, moveSuccess);
+            } else if (lvl === 1) {
+                drawSceneLevel2(ctx, canvas, userLength, deployProg, moveProg, moveSuccess);
+            } else if (lvl === 2) {
+                drawSceneLevel3(ctx, canvas, userLength, deployProg, moveProg, moveSuccess);
+            } else if (lvl === 3) {
+                drawSceneLevel4(ctx, canvas, userLength, deployProg, moveProg, moveSuccess);
+            } else if (lvl === 4) {
+                drawSceneLevel5(ctx, canvas, userLength, deployProg, moveProg, moveSuccess);
+            }
+        }
+
+        /* 1. Misi Jembatan Jurang */
+        function drawSceneLevel1(ctx, canvas, userBridgeLength, bridgeProg, heroProg, walkSuccess) {
+            const w = canvas.width, h = canvas.height;
+            const grad = ctx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, '#38bdf8');
+            grad.addColorStop(1, '#bae6fd');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
+
+            const startX = 180, startY = 180;
+            const targetX = 620, targetY = 270;
+
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(0, startY, 180, h - startY);
+            ctx.fillRect(targetX, targetY, w - targetX, h - targetY);
+            ctx.fillStyle = '#16a34a';
+            ctx.fillRect(0, startY, 180, 16);
+            ctx.fillRect(targetX, targetY, w - targetX, 16);
+
+            ctx.setLineDash([5, 5]);
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(targetX, startY);
+            ctx.stroke();
+
+            ctx.strokeStyle = '#059669';
+            ctx.beginPath();
+            ctx.moveTo(targetX, startY);
+            ctx.lineTo(targetX, targetY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            const targetAngle = Math.atan2(targetY - startY, targetX - startX);
+            const reqDist = Math.hypot(targetX - startX, targetY - startY);
+            let actualLen = reqDist;
+            if (userBridgeLength !== null) actualLen = (userBridgeLength / 10) * reqDist;
+            const curLen = actualLen * bridgeProg;
+
+            const endX = startX + Math.cos(targetAngle) * curLen;
+            const endY = startY + Math.sin(targetAngle) * curLen;
+
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 10;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            let heroX = startX - 25, heroY = startY;
+            if (heroProg > 0) {
+                if (walkSuccess) {
+                    heroX = (startX - 20) + (targetX + 20 - startX) * heroProg;
+                    heroY = startY + (targetY - startY) * heroProg;
+                } else {
+                    if (heroProg < 0.6) {
+                        heroX = startX + Math.cos(targetAngle) * (curLen * (heroProg / 0.6));
+                        heroY = startY + Math.sin(targetAngle) * (curLen * (heroProg / 0.6));
+                    } else {
+                        heroX = startX + Math.cos(targetAngle) * curLen;
+                        heroY = startY + Math.sin(targetAngle) * curLen + ((heroProg - 0.6) / 0.4) * 90;
+                    }
+                }
+            }
+
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc(heroX, heroY - 24, 9, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(heroX - 5, heroY - 15, 10, 14);
+        }
+
+        /* 2. Misi Pemadam Kebakaran & Gedung */
+        function drawSceneLevel2(ctx, canvas, userLadderLength, ladderProg, fireProg, success) {
+            const w = canvas.width, h = canvas.height;
+            const grad = ctx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, '#f97316');
+            grad.addColorStop(1, '#fed7aa');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.fillStyle = '#334155';
+            ctx.fillRect(0, h - 50, w, 50);
+
+            const buildingX = 540;
+            const windowY = 120;
+            ctx.fillStyle = '#78716c';
+            ctx.fillRect(buildingX, 60, w - buildingX, h - 110);
+            
+            ctx.fillStyle = '#fef08a';
+            for (let jx = buildingX + 30; jx < w - 20; jx += 60) {
+                for (let jy = 90; jy < h - 70; jy += 70) {
+                    ctx.fillRect(jx, jy, 35, 45);
+                }
+            }
+
+            ctx.fillStyle = '#ea580c';
+            ctx.beginPath();
+            ctx.arc(buildingX + 15, windowY, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillText("🐱", buildingX - 5, windowY + 4);
+
+            const truckX = 140, truckY = h - 75;
+            ctx.fillStyle = '#dc2626';
+            ctx.fillRect(truckX, truckY, 120, 45);
+            ctx.fillRect(truckX + 80, truckY - 20, 40, 25);
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(truckX + 90, truckY - 15, 25, 15);
+            ctx.fillStyle = '#1e293b';
+            ctx.beginPath();
+            ctx.arc(truckX + 25, truckY + 45, 12, 0, Math.PI * 2);
+            ctx.arc(truckX + 95, truckY + 45, 12, 0, Math.PI * 2);
+            ctx.fill();
+
+            const pivotX = truckX + 35, pivotY = truckY - 5;
+            const targetX = buildingX, targetY = windowY;
+            const angle = Math.atan2(targetY - pivotY, targetX - pivotX);
+            const reqDist = Math.hypot(targetX - pivotX, targetY - pivotY);
+            let actLen = reqDist;
+            if (userLadderLength !== null) actLen = (userLadderLength / 15) * reqDist;
+            const curLen = actLen * ladderProg;
+
+            const endLadderX = pivotX + Math.cos(angle) * curLen;
+            const endLadderY = pivotY + Math.sin(angle) * curLen;
+
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 8;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(pivotX, pivotY);
+            ctx.lineTo(endLadderX, endLadderY);
+            ctx.stroke();
+
+            if (fireProg > 0 && success) {
+                const px = pivotX + Math.cos(angle) * (curLen * fireProg);
+                const py = pivotY + Math.sin(angle) * (curLen * fireProg);
+                ctx.fillStyle = '#facc15';
+                ctx.beginPath();
+                ctx.arc(px, py - 12, 7, 0, Math.PI*2);
+                ctx.fill();
+                ctx.fillStyle = '#dc2626';
+                ctx.fillRect(px - 4, py - 5, 8, 10);
+            }
+        }
+
+        /* 3. Misi Peluncuran Roket Antariksa */
+        function drawSceneLevel3(ctx, canvas, userDist, launchProg, flightProg, success) {
+            const w = canvas.width, h = canvas.height;
+            ctx.fillStyle = '#090d16';
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.fillStyle = '#ffffff';
+            for (let i = 0; i < 40; i++) {
+                const sx = (i * 73) % w;
+                const sy = (i * 47) % (h - 60);
+                ctx.fillRect(sx, sy, 2, 2);
+            }
+
+            ctx.fillStyle = '#334155';
+            ctx.beginPath();
+            ctx.arc(100, h + 200, 320, 0, Math.PI * 2);
+            ctx.fill();
+
+            const issX = 640, issY = 100;
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(issX - 35, issY - 10, 70, 20);
+            ctx.fillStyle = '#94a3b8';
+            ctx.fillRect(issX - 8, issY - 25, 16, 50);
+            ctx.fillStyle = '#facc15';
+            ctx.font = '11px sans-serif';
+            ctx.fillText("🛰️ ISS Orbit", issX - 30, issY - 32);
+
+            const startX = 140, startY = 320;
+            const angle = Math.atan2(issY - startY, issX - startX);
+            const reqDist = Math.hypot(issX - startX, issY - startY);
+            let actDist = reqDist;
+            if (userDist !== null) actDist = (userDist / 13) * reqDist;
+            const curDist = actDist * launchProg;
+
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = '#0284c7';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(startX + Math.cos(angle) * curDist, startY + Math.sin(angle) * curDist);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            let rocketX = startX;
+            let rocketY = startY;
+            if (flightProg > 0) {
+                const moveDist = curDist * flightProg;
+                rocketX = startX + Math.cos(angle) * moveDist;
+                rocketY = startY + Math.sin(angle) * moveDist;
+            }
+
+            ctx.save();
+            ctx.translate(rocketX, rocketY);
+            ctx.rotate(angle + Math.PI/2);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(-6, -16, 12, 22);
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.moveTo(-6, -16);
+            ctx.lineTo(0, -28);
+            ctx.lineTo(6, -16);
+            ctx.fill();
+            if (launchProg > 0) {
+                ctx.fillStyle = '#f97316';
+                ctx.beginPath();
+                ctx.moveTo(-4, 6);
+                ctx.lineTo(0, 18);
+                ctx.lineTo(4, 6);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+
+        /* 4. Misi Sorotan Lampu Mercusuar Laut */
+        function drawSceneLevel4(ctx, canvas, userBeam, beamProg, sweepProg, success) {
+            const w = canvas.width, h = canvas.height;
+            const grad = ctx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, '#0f172a');
+            grad.addColorStop(1, '#0369a1');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.fillStyle = '#fef08a';
+            ctx.beginPath();
+            ctx.arc(380, 70, 24, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(0, 220, 120, h - 220);
+            ctx.fillStyle = '#f8fafc';
+            ctx.beginPath();
+            ctx.moveTo(35, 220);
+            ctx.lineTo(50, 110);
+            ctx.lineTo(75, 110);
+            ctx.lineTo(90, 220);
+            ctx.fill();
+            ctx.fillStyle = '#ef4444';
+            ctx.fillRect(45, 140, 35, 18);
+            ctx.fillRect(40, 180, 45, 18);
+
+            const lightX = 62, lightY = 105;
+            ctx.fillStyle = '#fef08a';
+            ctx.beginPath();
+            ctx.arc(lightX, lightY, 14, 0, Math.PI * 2);
+            ctx.fill();
+
+            const boatX = 620, boatY = 320;
+            ctx.fillStyle = '#92400e';
+            ctx.beginPath();
+            ctx.moveTo(boatX - 35, boatY);
+            ctx.lineTo(boatX + 35, boatY);
+            ctx.lineTo(boatX + 20, boatY + 16);
+            ctx.lineTo(boatX - 25, boatY + 16);
+            ctx.fill();
+            ctx.fillStyle = '#f8fafc';
+            ctx.beginPath();
+            ctx.moveTo(boatX - 5, boatY);
+            ctx.lineTo(boatX - 5, boatY - 32);
+            ctx.lineTo(boatX + 22, boatY - 8);
+            ctx.fill();
+
+            const angle = Math.atan2(boatY - lightY, boatX - lightX);
+            const reqDist = Math.hypot(boatX - lightX, boatY - lightY);
+            let actDist = reqDist;
+            if (userBeam !== null) actDist = (userBeam / 17) * reqDist;
+            const curDist = actDist * beamProg;
+
+            const endX = lightX + Math.cos(angle) * curDist;
+            const endY = lightY + Math.sin(angle) * curDist;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(lightX, lightY);
+            ctx.lineTo(endX + 15, endY);
+            ctx.lineTo(endX - 15, endY);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(254, 240, 138, 0.45)';
+            ctx.fill();
+            ctx.restore();
+        }
+
+        /* 5. Misi Meluncur Flying Fox di Hutan */
+        function drawSceneLevel5(ctx, canvas, userZipline, zipProg, slideProg, success) {
+            const w = canvas.width, h = canvas.height;
+            const grad = ctx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, '#0284c7');
+            grad.addColorStop(1, '#a7f3d0');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.fillStyle = '#15803d';
+            ctx.fillRect(0, h - 50, w, 50);
+
+            ctx.fillStyle = '#78350f';
+            ctx.fillRect(50, 90, 45, h - 140);
+            ctx.fillStyle = '#166534';
+            ctx.beginPath();
+            ctx.arc(72, 80, 55, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#b45309';
+            ctx.fillRect(35, 120, 80, 22);
+
+            const startX = 110, startY = 130;
+            const targetX = 640, targetY = 340;
+
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath();
+            ctx.moveTo(targetX - 25, targetY + 30);
+            ctx.lineTo(targetX + 15, targetY - 15);
+            ctx.lineTo(targetX + 55, targetY + 30);
+            ctx.fill();
+
+            const angle = Math.atan2(targetY - startY, targetX - startX);
+            const reqDist = Math.hypot(targetX - startX, targetY - startY);
+            let actDist = reqDist;
+            if (userZipline !== null) actDist = (userZipline / 25) * reqDist;
+            const curDist = actDist * zipProg;
+
+            const endX = startX + Math.cos(angle) * curDist;
+            const endY = startY + Math.sin(angle) * curDist;
+
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+
+            let flyerX = startX, flyerY = startY;
+            if (slideProg > 0) {
+                const curSlide = curDist * slideProg;
+                flyerX = startX + Math.cos(angle) * curSlide;
+                flyerY = startY + Math.sin(angle) * curSlide;
+            }
+
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc(flyerX, flyerY + 14, 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(flyerX - 4, flyerY + 20, 8, 12);
+        }
+
+        /* TAB 4: Kuis Evaluasi Dinamis */
+        const quizQuestions = [
+            {
+                category: "Soal Cerita Kehidupan Nyata",
+                question: "Sebuah tangga sepanjang 10 meter disandarkan pada tembok. Jika jarak ujung bawah tangga ke tembok adalah 6 meter, berapakah tinggi tembok yang dicapai tangga?",
+                options: ["6 meter", "8 meter", "9 meter", "12 meter"],
+                correct: 1,
+                tip: "💡 <strong>Petunjuk:</strong> Tangga sebagai sisi miring (hipotenusa = 10 m) dan jarak ujung bawah ke tembok sebagai alas (6 m). Cari sisi tegak (t) menggunakan teorema Pythagoras.",
+                explanation: "Gunakan rumus mencari sisi tegak tembok:<br><strong>t = √(10² - 6²) = √(100 - 36) = √64 = 8 meter.</strong>",
+                renderSVG: () => `
+                    <svg width="220" height="130" viewBox="0 0 220 130" class="select-none overflow-visible">
+                        <line x1="60" y1="18" x2="60" y2="105" stroke="#334155" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="60" y1="105" x2="160" y2="105" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
+                        <rect x="60" y="93" width="12" height="12" fill="none" stroke="#64748b" stroke-width="1.5"/>
+                        <line x1="60" y1="18" x2="160" y2="105" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+                        <text x="50" y="65" fill="#059669" font-weight="bold" font-size="11" text-anchor="end">t = ?</text>
+                        <text x="110" y="122" fill="#2563eb" font-weight="bold" font-size="11" text-anchor="middle">alas = 6 m</text>
+                        <text x="118" y="52" fill="#b45309" font-weight="bold" font-size="11" transform="rotate(41, 118, 52)">tangga = 10 m</text>
+                    </svg>
+                `
+            },
+            {
+                category: "Identifikasi Tripel Pythagoras",
+                question: "Kelompok tiga bilangan berikut yang merupakan Tripel Pythagoras adalah...",
+                options: ["4, 5, 6", "7, 24, 25", "6, 9, 12", "8, 10, 15"],
+                correct: 1,
+                tip: "💡 <strong>Petunjuk:</strong> Cek apakah kuadrat bilangan terbesar sama dengan jumlah kuadrat dua bilangan lainnya (a² + b² = c²).",
+                explanation: "Uji pilihan 7, 24, 25:<br>7² + 24² = 49 + 576 = 625.<br>25² = 625.<br>Karena nilainya sama persis, maka <strong>7, 24, 25</strong> adalah Tripel Pythagoras!",
+                renderSVG: () => `
+                    <svg width="220" height="130" viewBox="0 0 220 130" class="select-none overflow-visible">
+                        <polygon points="50,100 170,100 50,30" fill="#f8fafc" stroke="#6366f1" stroke-width="2.5"/>
+                        <rect x="50" y="88" width="12" height="12" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                        <text x="38" y="70" fill="#6366f1" font-weight="bold" font-size="12" text-anchor="end">a</text>
+                        <text x="110" y="120" fill="#6366f1" font-weight="bold" font-size="12" text-anchor="middle">b</text>
+                        <text x="120" y="58" fill="#4338ca" font-weight="bold" font-size="12">c (terpanjang)</text>
+                    </svg>
+                `
+            },
+            {
+                category: "Menghitung Hipotenusa",
+                question: "Sebuah segitiga siku-siku memiliki panjang sisi siku-sikunya 9 cm dan 12 cm. Panjang hipotenusanya adalah...",
+                options: ["15 cm", "18 cm", "21 cm", "25 cm"],
+                correct: 0,
+                tip: "💡 <strong>Petunjuk:</strong> Hipotenusa adalah sisi miring di seberang sudut 90°. Gunakan rumus c = √(a² + b²).",
+                explanation: "c = √(9² + 12²) = √(81 + 144) = √225 = <strong>15 cm</strong>. (Bisa juga diselesaikan cepat lewat pengali 3 dari tripel 3, 4, 5).",
+                renderSVG: () => `
+                    <svg width="220" height="130" viewBox="0 0 220 130" class="select-none overflow-visible">
+                        <polygon points="68,100 178,100 68,25" fill="#ecfdf5" stroke="#10b981" stroke-width="2.5"/>
+                        <rect x="68" y="88" width="12" height="12" fill="none" stroke="#6ee7b7" stroke-width="1.5"/>
+                        <text x="60" y="65" fill="#047857" font-weight="bold" font-size="11" text-anchor="end">b = 12 cm</text>
+                        <text x="123" y="120" fill="#2563eb" font-weight="bold" font-size="11" text-anchor="middle">a = 9 cm</text>
+                        <text x="132" y="55" fill="#b45309" font-weight="bold" font-size="12">c = ?</text>
+                    </svg>
+                `
+            },
+            {
+                category: "Aplikasi Lapangan Olahraga",
+                question: "Andi berlari di lapangan sepak bola berukuran 30 meter x 40 meter. Andi berlari memotong secara diagonal dari satu sudut ke sudut seberang. Jarak yang ditempuh Andi adalah...",
+                options: ["70 meter", "50 meter", "60 meter", "45 meter"],
+                correct: 1,
+                tip: "💡 <strong>Petunjuk:</strong> Lapangan persegi panjang yang dipotong diagonal menghasilkan 2 segitiga siku-siku dengan sisi 30 m dan 40 m.",
+                explanation: "Diagonal lapangan merupakan hipotenusa segitiga siku-siku:<br><strong>d = √(30² + 40²) = √(900 + 1600) = √2500 = 50 meter.</strong>",
+                renderSVG: () => `
+                    <svg width="220" height="130" viewBox="0 0 220 130" class="select-none overflow-visible">
+                        <rect x="35" y="25" width="140" height="75" fill="#f0fdf4" stroke="#15803d" stroke-width="2" stroke-dasharray="4,3"/>
+                        <line x1="35" y1="100" x2="175" y2="25" stroke="#ea580c" stroke-width="3" stroke-linecap="round"/>
+                        <text x="105" y="118" fill="#15803d" font-weight="bold" font-size="10" text-anchor="middle">Panjang: 40 m</text>
+                        <text x="182" y="65" fill="#15803d" font-weight="bold" font-size="10">30 m</text>
+                        <text x="95" y="58" fill="#ea580c" font-weight="bold" font-size="11" transform="rotate(-28, 95, 58)">Diagonal = ?</text>
+                    </svg>
+                `
+            },
+            {
+                category: "Konsep Teorema",
+                question: "Pada segitiga PQR siku-siku di titik Q, pernyataan rumus Pythagoras berikut yang BENAR adalah...",
+                options: ["PQ² = PR² + QR²", "PR² = PQ² + QR²", "QR² = PR² + PQ²", "PR = PQ + QR"],
+                correct: 1,
+                tip: "💡 <strong>Petunjuk:</strong> Perhatikan titik sudut siku-sikunya. Sisi miring selalu terletak tepat di seberang sudut 90°.",
+                explanation: "Karena siku-siku berada di titik Q, maka sisi di hadapan sudut Q adalah PR (hipotenusa). Jadi persamaan yang benar: <strong>PR² = PQ² + QR²</strong>.",
+                renderSVG: () => `
+                    <svg width="220" height="130" viewBox="0 0 220 130" class="select-none overflow-visible">
+                        <polygon points="60,98 165,98 60,30" fill="#faf5ff" stroke="#7c3aed" stroke-width="2.5"/>
+                        <rect x="60" y="86" width="12" height="12" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+                        <text x="50" y="105" fill="#6b21a8" font-weight="bold" font-size="11" text-anchor="end">Q (90°)</text>
+                        <text x="172" y="105" fill="#6b21a8" font-weight="bold" font-size="11">R</text>
+                        <text x="50" y="28" fill="#6b21a8" font-weight="bold" font-size="11" text-anchor="end">P</text>
+                    </svg>
+                `
+            }
+        ];
+
+        let quizIndex = 0;
+        let quizScore = 0;
+        let quizAnswered = false;
+
+        function renderQuiz() {
+            quizAnswered = false;
+            const q = quizQuestions[quizIndex];
+            document.getElementById('quiz-progress').textContent = `${quizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-category').textContent = q.category;
+            document.getElementById('quiz-question-title').textContent = q.question;
+
+            document.getElementById('quiz-visual-canvas').innerHTML = q.renderSVG();
+            document.getElementById('quiz-visual-tip').innerHTML = q.tip;
+
+            const optionsGrid = document.getElementById('quiz-options-grid');
+            optionsGrid.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-opt-btn p-3.5 sm:p-4 text-left font-medium bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-2xl transition duration-150 flex items-center justify-between text-slate-700 text-xs sm:text-sm touch-action-btn";
+                btn.innerHTML = `<span><strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}</span> <i class="fa-regular fa-circle text-slate-400 opt-icon"></i>`;
+                btn.onclick = () => selectQuizAnswer(idx, btn);
+                optionsGrid.appendChild(btn);
+            });
+
+            document.getElementById('quiz-feedback-box').classList.add('hidden');
+        }
+
+        function selectQuizAnswer(selectedIndex, buttonElement) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+
+            const q = quizQuestions[quizIndex];
+            const isCorrect = selectedIndex === q.correct;
+            const feedbackBox = document.getElementById('quiz-feedback-box');
+            const feedbackTitle = document.getElementById('quiz-feedback-title');
+            const feedbackDesc = document.getElementById('quiz-feedback-explanation');
+            const feedbackIcon = document.getElementById('quiz-feedback-icon');
+
+            const deepExp = document.getElementById('quiz-ai-deep-explanation');
+            if (deepExp) {
+                deepExp.classList.add('hidden');
+                deepExp.innerHTML = '';
+            }
+
+            const allButtons = document.querySelectorAll('.quiz-opt-btn');
+            allButtons.forEach((b, idx) => {
+                b.disabled = true;
+                if (idx === q.correct) {
+                    b.classList.remove('bg-slate-50', 'border-slate-200');
+                    b.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900');
+                    b.querySelector('.opt-icon').className = "fa-solid fa-circle-check text-emerald-500";
+                } else if (idx === selectedIndex && !isCorrect) {
+                    b.classList.remove('bg-slate-50', 'border-slate-200');
+                    b.classList.add('bg-red-50', 'border-red-400', 'text-red-900');
+                    b.querySelector('.opt-icon').className = "fa-solid fa-circle-xmark text-red-500";
+                }
+            });
+
+            if (isCorrect) {
+                playSound('success');
+                quizScore += 20;
+                feedbackBox.className = "mt-5 p-4 rounded-2xl border bg-emerald-50/80 border-emerald-200 text-emerald-900";
+                feedbackTitle.textContent = "Jawaban Tepat Sekali! 🎉";
+                feedbackIcon.className = "fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5";
+            } else {
+                playSound('error');
+                feedbackBox.className = "mt-5 p-4 rounded-2xl border bg-red-50/80 border-red-200 text-red-900";
+                feedbackTitle.textContent = "Jawaban Belum Pas!";
+                feedbackIcon.className = "fa-solid fa-circle-xmark text-red-500 text-xl mt-0.5";
+            }
+
+            feedbackDesc.innerHTML = q.explanation;
+            feedbackBox.classList.remove('hidden');
+        }
+
+        function explainQuizWithAI() {
+            playSound('click');
+            const q = quizQuestions[quizIndex];
+            const deepExp = document.getElementById('quiz-ai-deep-explanation');
+            deepExp.classList.remove('hidden');
+            deepExp.innerHTML = `
+                <div class="font-bold text-indigo-900 mb-1 flex items-center gap-1.5">
+                    <i class="fa-solid fa-graduation-cap text-indigo-600"></i> Penjelasan Detail Guru AI:
+                </div>
+                <div class="text-slate-700 leading-relaxed">
+                    ${q.explanation}
+                    <br><br>
+                    💡 <strong>Tips Tambahan:</strong> Pada segitiga siku-siku, selalu identifikasi posisi sudut 90° terlebih dahulu. Sisi yang berhadapan langsung dengan sudut siku-siku adalah <em>hipotenusa</em> (sisi terpanjang). Bila mencari hipotenusa maka kuadrat kedua sisi <strong>dijumlahkan</strong>, sedangkan bila mencari salah satu sisi penyiku maka kuadrat hipotenusa <strong>dikurangi</strong> kuadrat sisi yang diketahui.
+                </div>
+            `;
+        }
+
+        function nextQuizQuestion() {
+            playSound('click');
+            if (quizIndex < quizQuestions.length - 1) {
+                quizIndex++;
+                renderQuiz();
+            } else {
+                document.getElementById('quiz-container').classList.add('hidden');
+                const summary = document.getElementById('quiz-summary-box');
+                document.getElementById('quiz-final-score').textContent = quizScore;
+                summary.classList.remove('hidden');
+
+                if (quizScore >= 80) {
+                    playSound('success');
+                    confetti({ particleCount: 80, spread: 70 });
+                }
+            }
+        }
+
+        function restartQuiz() {
+            playSound('click');
+            quizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('quiz-summary-box').classList.add('hidden');
+            renderQuiz();
+        }
+
+        /* TAB 5: Guru AI & Simulator Misi Semula */
+        let selectedTheme = 'Bajak Laut Mencari Peti Harta';
+
+        function switchAISubTab(tab) {
+            playSound('click');
+            const chatView = document.getElementById('ai-view-chat');
+            const questView = document.getElementById('ai-view-quest');
+            const chatBtn = document.getElementById('ai-subtab-chat-btn');
+            const questBtn = document.getElementById('ai-subtab-quest-btn');
+
+            if (tab === 'chat') {
+                chatView.classList.remove('hidden');
+                questView.classList.add('hidden');
+                chatBtn.className = "touch-action-btn px-3.5 py-2 rounded-xl bg-white text-indigo-800 font-bold text-xs sm:text-sm shadow transition flex items-center gap-1.5";
+                questBtn.className = "touch-action-btn px-3.5 py-2 rounded-xl bg-indigo-500/50 hover:bg-white/20 text-white font-bold text-xs sm:text-sm transition flex items-center gap-1.5";
+            } else {
+                chatView.classList.add('hidden');
+                questView.classList.remove('hidden');
+                questBtn.className = "touch-action-btn px-3.5 py-2 rounded-xl bg-white text-indigo-800 font-bold text-xs sm:text-sm shadow transition flex items-center gap-1.5";
+                chatBtn.className = "touch-action-btn px-3.5 py-2 rounded-xl bg-indigo-500/50 hover:bg-white/20 text-white font-bold text-xs sm:text-sm transition flex items-center gap-1.5";
+            }
+        }
+
+        function clearChatHistory() {
+            playSound('click');
+            const container = document.getElementById('ai-chat-messages');
+            container.innerHTML = `
+                <div class="flex items-start gap-2.5">
+                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xs shrink-0 mt-0.5">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-indigo-50/80 text-slate-800 p-3.5 rounded-2xl rounded-tl-none border border-indigo-100 max-w-xl text-xs sm:text-sm leading-relaxed">
+                        Papan percakapan sudah dibersihkan! Ada yang ingin kamu diskusikan lagi seputar Teorema Pythagoras? Silakan ketik pertanyaanmu ya! 🚀
+                    </div>
+                </div>
+            `;
+            showToast("Riwayat chat dibersihkan", "info");
+        }
+
+        function sendQuickPrompt(promptText) {
+            document.getElementById('ai-chat-input').value = promptText;
+            handleChatSubmit(new Event('submit'));
+        }
+
+        function generateAIResponse(text) {
+            const lower = text.toLowerCase();
+
+            const numbers = lower.match(/\d+(\.\d+)?/g);
+            if (numbers && numbers.length >= 2) {
+                const n1 = parseFloat(numbers[0]);
+                const n2 = parseFloat(numbers[1]);
+                if (lower.includes('miring') || lower.includes('hipotenusa') || lower.includes('cari c') || lower.includes('alas') || lower.includes('+')) {
+                    const c = Math.sqrt(n1*n1 + n2*n2);
+                    const isInt = Number.isInteger(c);
+                    return `
+                        <strong>Langkah Penyelesaian Hitung:</strong><br><br>
+                        Diketahui kedua sisi siku-sikunya adalah <strong>${n1}</strong> dan <strong>${n2}</strong>.<br>
+                        Rumus mencari sisi miring (hipotenusa):<br>
+                        <code class="bg-indigo-100 text-indigo-900 px-2 py-0.5 rounded font-bold">c = √(a² + b²)</code><br><br>
+                        • c² = ${n1}² + ${n2}²<br>
+                        • c² = ${n1*n1} + ${n2*n2} = <strong>${n1*n1 + n2*n2}</strong><br>
+                        • c = √(${n1*n1 + n2*n2}) = <strong class="text-emerald-700 font-bold">${isInt ? c : c.toFixed(2)}</strong><br><br>
+                        Jadi, panjang sisi miringnya adalah <strong>${isInt ? c : c.toFixed(2)} satuan</strong>. Semangat belajarnya! 🌟
+                    `;
+                }
+            }
+
+            if (lower.includes('tripel') || lower.includes('triple') || lower.includes('hafal') || lower.includes('trik')) {
+                return `
+                    <strong>Trik Gampang Mengingat Tripel Pythagoras:</strong><br><br>
+                    Kamu cukup menghafal <strong>4 kelompok dasar</strong> ini, karena soal ujian SMP paling sering menggunakan angka-angka ini:<br>
+                    1. <strong>3, 4, 5</strong> (kelipatannya: 6-8-10, 9-12-15, 12-16-20)<br>
+                    2. <strong>5, 12, 13</strong> (kelipatannya: 10-24-26)<br>
+                    3. <strong>7, 24, 25</strong> (kelipatannya: 14-48-50)<br>
+                    4. <strong>8, 15, 17</strong> (kelipatannya: 16-30-34)<br><br>
+                    💡 <em>Trik rahasia:</em> Jika menemui angka besar seperti 30 dan 40, bagi saja dengan 10! Hasilnya 3 dan 4, sehingga sisi miringnya pasti 5 × 10 = <strong>50</strong>!
+                `;
+            }
+
+            if (lower.includes('nyata') || lower.includes('kehidupan') || lower.includes('contoh') || lower.includes('penerapan')) {
+                return `
+                    <strong>Penerapan Teorema Pythagoras di Kehidupan Nyata:</strong><br><br>
+                    • <strong>Arsitektur & Tukang Bangunan:</strong> Tukang menggunakan tali 3-4-5 untuk memastikan sudut pondasi rumah benar-benar siku-siku (tegak lurus 90°).<br>
+                    • <strong>Ukuran Layar Gadget:</strong> Layar TV 55 inci atau HP 6.5 inci diukur dari panjang garis <em>diagonal miringnya</em> menggunakan rumus Pythagoras!<br>
+                    • <strong>Navigasi Kapal & GPS:</strong> Menghitung jarak lurus terdekat (*jarak burung terbang*) dari pelabuhan ke tujuan setelah berbelok ke arah utara dan timur.
+                `;
+            }
+
+            if (lower.includes('kenapa') || lower.includes('hanya') || lower.includes('siku')) {
+                return `
+                    <strong>Kenapa Rumus Pythagoras Hanya Berlaku untuk Sudut 90°?</strong><br><br>
+                    Karena pada sudut tepat 90°, luas proyeksi dua persegi sisi penyiku tepat pas menyusun luas persegi sisi miring tanpa ada celah atau tumpang tindih!<br><br>
+                    • Jika sudutnya <strong>kurang dari 90° (segitiga lancip)</strong>: maka c² < a² + b².<br>
+                    • Jika sudutnya <strong>lebih dari 90° (segitiga tumpul)</strong>: maka c² > a² + b².<br>
+                    Hanya pada sudut <strong>siku-siku 90°</strong> berlaku persamaan mutlak: <strong>a² + b² = c²</strong>.
+                `;
+            }
+
+            return `
+                Terima kasih atas pertanyaannya! 😊<br><br>
+                Dalam Teorema Pythagoras, rumus dasar yang harus kita pegang erat adalah:<br>
+                <div class="p-2 bg-indigo-100 rounded-lg text-center font-bold text-indigo-900 my-1 font-mono">a² + b² = c²</div>
+                Di mana <strong>a</strong> dan <strong>b</strong> adalah sisi siku-siku, dan <strong>c</strong> adalah hipotenusa (sisi terpanjang di seberang sudut 90°).<br><br>
+                Kamu juga bisa mengetikkan angka soalmu langsung ke sini lho, contohnya: <em>"alas 6 tinggi 8 berapa sisi miring?"</em>. Yuk dicoba!
+            `;
+        }
+
+        function handleChatSubmit(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('ai-chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            input.value = '';
+            playSound('click');
+
+            const container = document.getElementById('ai-chat-messages');
+
+            const userHtml = `
+                <div class="flex items-start justify-end gap-2.5">
+                    <div class="bg-indigo-600 text-white p-3 sm:p-4 rounded-2xl rounded-tr-none max-w-md sm:max-w-xl text-xs sm:text-sm leading-relaxed shadow-2xs">
+                        ${escapeHtml(message)}
+                    </div>
+                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-200 text-slate-700 flex items-center justify-center text-[11px] shrink-0 mt-0.5 font-bold">
+                        Kamu
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', userHtml);
+
+            const loadingId = 'loading-' + Date.now();
+            const loadingHtml = `
+                <div id="${loadingId}" class="flex items-start gap-2.5">
+                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xs shrink-0 mt-0.5">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-slate-100 text-slate-500 p-2.5 sm:p-3 rounded-2xl rounded-tl-none text-xs flex items-center gap-2 border border-slate-200">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Guru Pythagoras sedang menyusun jawaban...
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', loadingHtml);
+            container.scrollTop = container.scrollHeight;
+
+            const sendBtn = document.getElementById('ai-chat-send-btn');
+            sendBtn.disabled = true;
+
+            setTimeout(() => {
+                document.getElementById(loadingId)?.remove();
+                const reply = generateAIResponse(message);
+                const botHtml = `
+                    <div class="flex items-start gap-2.5">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xs shrink-0 mt-0.5 shadow-2xs">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="bg-indigo-50/80 text-slate-800 p-3.5 rounded-2xl rounded-tl-none border border-indigo-100 max-w-md sm:max-w-xl text-xs sm:text-sm leading-relaxed shadow-2xs">
+                            ${reply}
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', botHtml);
+                playSound('success');
+                sendBtn.disabled = false;
+                container.scrollTop = container.scrollHeight;
+            }, 500);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function selectQuestTheme(themeName) {
+            playSound('click');
+            selectedTheme = themeName;
+            document.getElementById('current-selected-theme').textContent = themeName;
+
+            document.querySelectorAll('.quest-theme-btn').forEach(btn => {
+                if (btn.dataset.theme === themeName) {
+                    btn.className = "quest-theme-btn p-3 rounded-2xl border-2 border-purple-500 bg-purple-50 text-left transition touch-action-btn";
+                } else {
+                    btn.className = "quest-theme-btn p-3 rounded-2xl border-2 border-slate-200 hover:border-slate-300 text-left transition touch-action-btn";
+                }
+            });
+        }
+
+        const thematicQuests = {
+            'Bajak Laut Mencari Peti Harta': [
+                {
+                    title: "Misteri Peti di Gua Karang",
+                    story: "Kapal Kapten Jack berlabuh 12 meter di barat dermaga, kemudian awak kapalnya berjalan 5 meter lurus ke utara menuju pintu gua peti emas. Berapakah jarak lurus terpendek dari kapal langsung ke pintu gua?",
+                    options: ["13 meter", "15 meter", "17 meter", "20 meter"],
+                    correct: 0,
+                    explanation: "Gunakan rumus hipotenusa: c = √(12² + 5²) = √(144 + 25) = √169 = <strong>13 meter</strong> (Kelompok Tripel 5, 12, 13)."
+                },
+                {
+                    title: "Peta Rahasia Pulau Tengkorak",
+                    story: "Sebuah tiang bendera kapal bajak laut setinggi 8 meter dipasangi tali penahan ke dek kapal sejauh 15 meter dari pangkal tiang. Berapakah panjang tali yang dibutuhkan?",
+                    options: ["16 meter", "17 meter", "19 meter", "23 meter"],
+                    correct: 1,
+                    explanation: "c = √(8² + 15²) = √(64 + 225) = √289 = <strong>17 meter</strong> (Tripel 8, 15, 17)."
+                }
+            ],
+            'Penjelajahan Luar Angkasa dan Roket': [
+                {
+                    title: "Manuver Docking Stasiun Antariksa",
+                    story: "Kapsul ruang angkasa berada 6 km di bawah satelit dan 8 km di sebelah kirinya. Kapsul harus meluncur diagonal lurus menuju satelit. Berapa jarak tempuh manuver lurus tersebut?",
+                    options: ["9 km", "10 km", "12 km", "14 km"],
+                    correct: 1,
+                    explanation: "Jarak lurus = √(6² + 8²) = √(36 + 64) = √100 = <strong>10 km</strong> (Kelipatan dua dari tripel 3, 4, 5)."
+                }
+            ],
+            'Arsitektur Minecraft dan Bangunan': [
+                {
+                    title: "Konstruksi Rangka Atap Rumah",
+                    story: "Steve ingin membuat atap miring rumahnya. Tinggi tiang atap adalah 9 blok dan jarak dari tiang ke tepi dinding adalah 12 blok. Berapa panjang balok kayu miring yang harus dipasang Steve?",
+                    options: ["14 blok", "15 blok", "18 blok", "21 blok"],
+                    correct: 1,
+                    explanation: "c = √(9² + 12²) = √(81 + 144) = √225 = <strong>15 blok</strong>."
+                }
+            ],
+            'Sepak Bola dan Taktik Operan': [
+                {
+                    title: "Umpan Terobosan Silang",
+                    story: "Gelandang tengah mengoper bola mendatar dari titik tengah lapangan ke pemain sayap. Bola bergerak 24 meter ke depan dan 7 meter ke arah samping kanan. Berapa jarak lintasan bola yang bergulir?",
+                    options: ["25 meter", "26 meter", "28 meter", "31 meter"],
+                    correct: 0,
+                    explanation: "Lintasan = √(24² + 7²) = √(576 + 49) = √625 = <strong>25 meter</strong> (Tripel 7, 24, 25)."
+                }
+            ]
+        };
+
+        let currentActiveQuest = null;
+
+        function generateAIQuest() {
+            playSound('click');
+            const btn = document.getElementById('btn-generate-quest');
+            const loading = document.getElementById('quest-loading');
+            const card = document.getElementById('quest-card');
+
+            btn.disabled = true;
+            loading.classList.remove('hidden');
+            card.classList.add('hidden');
+
+            setTimeout(() => {
+                loading.classList.add('hidden');
+                btn.disabled = false;
+
+                const pool = thematicQuests[selectedTheme] || thematicQuests['Bajak Laut Mencari Peti Harta'];
+                const quest = pool[Math.floor(Math.random() * pool.length)];
+                currentActiveQuest = quest;
+
+                document.getElementById('quest-theme-badge').textContent = selectedTheme;
+                document.getElementById('quest-title').textContent = quest.title;
+                document.getElementById('quest-description').textContent = quest.story;
+
+                const optionsContainer = document.getElementById('quest-options');
+                optionsContainer.innerHTML = '';
+                document.getElementById('quest-feedback').classList.add('hidden');
+
+                quest.options.forEach((opt, idx) => {
+                    const b = document.createElement('button');
+                    b.className = "quest-opt-btn p-3 bg-white hover:bg-purple-50 border-2 border-slate-200 rounded-xl font-medium text-slate-800 text-left transition flex items-center justify-between text-xs sm:text-sm shadow-2xs touch-action-btn";
+                    b.innerHTML = `<span><strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}</span> <i class="fa-regular fa-circle text-slate-400 quest-opt-icon"></i>`;
+                    b.onclick = () => answerGeneratedQuest(idx, b);
+                    optionsContainer.appendChild(b);
+                });
+
+                card.classList.remove('hidden');
+                playSound('success');
+            }, 600);
+        }
+
+        function answerGeneratedQuest(selectedIndex, clickedBtn) {
+            if (!currentActiveQuest) return;
+
+            const isCorrect = selectedIndex === currentActiveQuest.correct;
+            const feedback = document.getElementById('quest-feedback');
+
+            document.querySelectorAll('.quest-opt-btn').forEach((b, idx) => {
+                b.disabled = true;
+                if (idx === currentActiveQuest.correct) {
+                    b.classList.remove('border-slate-200', 'bg-white');
+                    b.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-900');
+                    b.querySelector('.quest-opt-icon').className = "fa-solid fa-circle-check text-emerald-500";
+                } else if (idx === selectedIndex && !isCorrect) {
+                    b.classList.remove('border-slate-200', 'bg-white');
+                    b.classList.add('border-red-400', 'bg-red-50', 'text-red-900');
+                    b.querySelector('.quest-opt-icon').className = "fa-solid fa-circle-xmark text-red-500";
+                }
+            });
+
+            if (isCorrect) {
+                playSound('success');
+                confetti({ particleCount: 70, spread: 60 });
+                feedback.className = "p-3.5 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-900 text-xs sm:text-sm space-y-1";
+                feedback.innerHTML = `
+                    <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-600"></i> Jawabanmu Benar! Misi Sukses! 🎯</div>
+                    <div class="text-xs text-slate-700 mt-1 leading-relaxed">${currentActiveQuest.explanation}</div>
+                `;
+            } else {
+                playSound('error');
+                feedback.className = "p-3.5 rounded-xl border bg-red-50 border-red-200 text-red-900 text-xs sm:text-sm space-y-1";
+                feedback.innerHTML = `
+                    <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-xmark text-red-500"></i> Belum Tepat! Periksa Langkah Ini:</div>
+                    <div class="text-xs text-slate-700 mt-1 leading-relaxed">${currentActiveQuest.explanation}</div>
+                `;
+            }
+            feedback.classList.remove('hidden');
+        }
+
+        /* ================= TAB 6: DATA & LOGIKA 10 KATA-KATA MATEMATIKA ================= */
+        const mathQuotesData = [
+            {
+                id: 1,
+                category: "motivasi",
+                title: "Garis Bilangan Hidup",
+                quote: "Hidup itu seperti garis bilangan. Kamu boleh mulai dari titik nol atau bahkan minus, tapi setiap langkah ke kanan selalu membawamu menuju hal yang lebih besar dan positif.",
+                tag: "Motivasi Semangat",
+                icon: "fa-arrow-trend-up",
+                color: "blue"
+            },
+            {
+                id: 2,
+                category: "gombal",
+                title: "Teorema Cinta Pythagoras",
+                quote: "Cintaku padamu itu bagai Teorema Pythagoras: kuadrat cintaku (a²) ditambah kuadrat rinduku (b²) menghasilkan kamu sebagai satu-satunya hipotenusa (c²) terindah di hatiku!",
+                tag: "Gombalan Pythagoras",
+                icon: "fa-heart",
+                color: "rose"
+            },
+            {
+                id: 3,
+                category: "motivasi",
+                title: "Setiap Masalah Memiliki Variabel x",
+                quote: "Matematika mengajarkan kita bahwa serumit apa pun persamaannya, selalu ada nilai x yang menjadi solusi. Jangan menyerah, mungkin sudut pandangmu yang perlu dirotasi!",
+                tag: "Filsafat Masalah",
+                icon: "fa-lightbulb",
+                color: "amber"
+            },
+            {
+                id: 4,
+                category: "gombal",
+                title: "Sudut 90 Derajat Yang Pas",
+                quote: "Kita berdua itu seperti dua sisi siku-siku a dan b. Tanpa adanya pertemuan tegak lurus di antara kita, garis miring cinta yang sempurna takkan pernah terbentuk.",
+                tag: "Gombalan Geometri",
+                icon: "fa-shapes",
+                color: "purple"
+            },
+            {
+                id: 5,
+                category: "motivasi",
+                title: "Fondasi Alas dan Tinggi",
+                quote: "Untuk memiliki sisi miring yang menjulang tinggi, kamu butuh alas karakter yang kokoh dan tinggi ilmu yang tegak lurus. Kuatkan fondasimu hari ini!",
+                tag: "Pondasi Belajar",
+                icon: "fa-building-columns",
+                color: "emerald"
+            },
+            {
+                id: 6,
+                category: "gombal",
+                title: "Pelindung Hipotenusa",
+                quote: "Jika kamu adalah sudut siku-siku 90°, maka aku rela menjadi hipotenusa terpanjang yang selalu berdiri tepat di hadapanmu untuk melindungimu dari segala arah.",
+                tag: "Gombalan Romantis",
+                icon: "fa-shield-heart",
+                color: "rose"
+            },
+            {
+                id: 7,
+                category: "motivasi",
+                title: "Bukan Salah, Cuma Tanda Kurang Teliti",
+                quote: "Kesalahan dalam belajar matematika biasanya hanya karena keliru tanda plus atau minus. Begitu pula hidup: saat gagal, periksa langkahmu, perbaiki tanda kurungmu, dan hitung kembali!",
+                tag: "Evaluasi Diri",
+                icon: "fa-circle-check",
+                color: "indigo"
+            },
+            {
+                id: 8,
+                category: "gombal",
+                title: "Konstanta Pi Tanpa Akhir",
+                quote: "Cinta kita itu seperti bilangan Pi (π ≈ 3,14159...): tidak terputus, tidak pernah berulang sama, dan berlangsung terus tanpa pernah mengenal batas akhir.",
+                tag: "Gombalan Aljabar",
+                icon: "fa-infinity",
+                color: "pink"
+            },
+            {
+                id: 9,
+                category: "motivasi",
+                title: "Ketekunan Pembuktian Pythagoras",
+                quote: "Pythagoras tidak menemukan rumusnya dalam semalam. Belajarlah dari para matematikawan: rahasia terbesar alam semesta hanya terbuka bagi mereka yang pantang berhenti mencoba!",
+                tag: "Ketekunan Ilmu",
+                icon: "fa-scroll",
+                color: "amber"
+            },
+            {
+                id: 10,
+                category: "gombal",
+                title: "Tegak Lurus Tak Pernah Miring",
+                quote: "Kamu tahu kenapa segitiga siku-siku itu istimewa? Karena sudut 90 derajatnya tegak lurus dan pasti, persis seperti komitmenku padamu yang takkan pernah miring ke yang lain.",
+                tag: "Gombalan Sudut",
+                icon: "fa-compass-drafting",
+                color: "teal"
+            }
+        ];
+
+        let currentQuoteFilter = 'all';
+
+        function renderQuotesList(filter = 'all') {
+            currentQuoteFilter = filter;
+            const container = document.getElementById('quotes-grid');
+            if (!container) return;
+
+            const filteredData = filter === 'all' 
+                ? mathQuotesData 
+                : mathQuotesData.filter(q => q.category === filter);
+
+            container.innerHTML = '';
+
+            filteredData.forEach(item => {
+                const isGombal = item.category === 'gombal';
+                const cardBorder = isGombal ? 'border-rose-100 hover:border-rose-300' : 'border-slate-100 hover:border-blue-300';
+                const badgeColor = isGombal ? 'bg-rose-100 text-rose-800' : 'bg-blue-100 text-blue-800';
+                const iconColor = isGombal ? 'text-rose-500 bg-rose-50' : 'text-blue-500 bg-blue-50';
+
+                const cardHtml = `
+                    <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-xs border ${cardBorder} flex flex-col justify-between hover:shadow-md transition duration-200">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="${badgeColor} text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+                                    <i class="fa-solid ${item.icon}"></i> ${item.tag}
+                                </span>
+                                <span class="text-xs font-bold text-slate-300">#${item.id}</span>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-sm sm:text-base mb-2 font-fredoka flex items-center gap-2">
+                                <span class="w-7 h-7 rounded-lg ${iconColor} flex items-center justify-center text-xs shrink-0">
+                                    <i class="fa-solid ${item.icon}"></i>
+                                </span>
+                                ${item.title}
+                            </h4>
+                            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed italic bg-slate-50/70 p-3 sm:p-3.5 rounded-xl border border-slate-100">
+                                "${item.quote}"
+                            </p>
+                        </div>
+                        <div class="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                            <span class="text-[11px] text-slate-400 font-medium">
+                                ${isGombal ? '❤️ Gombalan Matematika' : '💡 Motivasi Pythagoras'}
+                            </span>
+                            <button onclick="copyQuoteText('${escapeHtml(item.quote)}')" class="touch-action-btn px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-600 font-semibold transition flex items-center gap-1.5 text-xs">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>Salin</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHtml);
+            });
+
+            // Update filter buttons styling
+            ['all', 'motivasi', 'gombal'].forEach(f => {
+                const btn = document.getElementById(`filter-btn-${f}`);
+                if (btn) {
+                    if (f === filter) {
+                        btn.className = "quote-filter-btn px-3.5 py-2 rounded-xl bg-rose-500 text-white font-bold transition touch-action-btn whitespace-nowrap shadow-xs";
+                    } else {
+                        btn.className = "quote-filter-btn px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold transition touch-action-btn whitespace-nowrap";
+                    }
+                }
+            });
+        }
+
+        function filterQuotes(category) {
+            playSound('click');
+            renderQuotesList(category);
+        }
+
+        function pickRandomQuote() {
+            playSound('success');
+            const randomItem = mathQuotesData[Math.floor(Math.random() * mathQuotesData.length)];
+            const spotlight = document.getElementById('random-quote-spotlight');
+            const textEl = document.getElementById('spotlight-text');
+            const authorEl = document.getElementById('spotlight-author');
+            const copyBtn = document.getElementById('spotlight-copy-btn');
+
+            textEl.textContent = `"${randomItem.quote}"`;
+            authorEl.textContent = `${randomItem.title} • ${randomItem.category === 'gombal' ? 'Gombalan Pythagoras' : 'Motivasi Matematika'}`;
+            copyBtn.onclick = () => copyQuoteText(randomItem.quote);
+
+            spotlight.classList.remove('hidden');
+            spotlight.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            confetti({ particleCount: 45, spread: 60, origin: { y: 0.4 } });
+        }
+
+        function copyQuoteText(text) {
+            try {
+                const tempTextArea = document.createElement("textarea");
+                tempTextArea.value = text;
+                tempTextArea.style.position = "fixed";
+                tempTextArea.style.left = "-9999px";
+                document.body.appendChild(tempTextArea);
+                tempTextArea.focus();
+                tempTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextArea);
+
+                playSound('click');
+                showToast("Kata-kata berhasil disalin ke papan klip! 📋", "success");
+            } catch (err) {
+                showToast("Gagal menyalin teks secara otomatis.", "error");
+            }
+        }
+
+        /* Inisialisasi awal saat halaman dimuat */
+        window.onload = function() {
+            setProofExample(3, 4);
+            updateLab();
+            renderQuiz();
+            renderQuotesList('all');
+
+            window.addEventListener('resize', () => {
+                const labC = document.getElementById('labCanvas');
+                const gameC = document.getElementById('gameCanvas');
+                if (labC) drawLabCanvas(parseInt(document.getElementById('slider-a').value), parseInt(document.getElementById('slider-b').value), Math.hypot(parseInt(document.getElementById('slider-a').value), parseInt(document.getElementById('slider-b').value)));
+                if (gameC) drawGameScene();
+            });
+        };
+    </script>
+</body>
+</html>
